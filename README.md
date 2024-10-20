@@ -4,12 +4,12 @@ A few things to note:
 - Classes can be written as factories to avoid the `new` keyword.
 - I don't know if it works in async code or if it can work.
 #### Syntax:
-`.t` - type of the variable, actually references the <variable.constructor>   
-`.v` - number primitive inside the custom type    
-`._` - must be appended at the end of the expression to clear the `Signal` object. Converts the custom type as usual.   
+- `.t` - type of the variable, actually references the <variable.constructor>
+- `.v` - number primitive inside the custom type
+- `._` - must be appended at the end of the expression to clear the `Signal` object. Converts the custom type as usual.   
 #### Structure:    
-`Signal` - global object that records every conversion/coercion.
-`#converter` - checks `Signal` to confirm conversion is allowed. Returns `.v` if true, else returns `NaN`.
+- `Signal` - global object that records every conversion/coercion.
+- `#converter` - checks `Signal` to confirm conversion is allowed. Returns `.v` if true, else returns `NaN`.
 ```javascript
 let test = new Int(6.3);
 const float = new Float(7.7);
