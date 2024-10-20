@@ -6,7 +6,11 @@ A few things to note:
 ### Syntax:
 - `.t` - type of the variable, actually references the <variable.constructor>
 - `.v` - number primitive inside the custom type
-- `._` - must be appended at the end of the expression to clear the `Signal` object. Returns result of `#converter`.   
+- `._` - must be appended at the end of the expression to clear the `Signal` object. Returns result of `#converter`
+- `(<num>).int` - getter attached to `Number` global object. Returns <num> converted to an `Int`, works on custom types and primitive numbers.
+  - Has the effect of `._`
+- `(<num>).float` - getter attached to `Number` global object. Returns <num> converted to a `Float`, works on custom types and primitive numbers.
+  - Has the effect of `._`
 ### Structure:    
 - `Signal` - global object that records last conversion/coercion.
 - `#converter` - checks `Signal` to confirm conversion is allowed. Returns `.v` if true, else returns `NaN`.
