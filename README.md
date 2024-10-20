@@ -8,7 +8,7 @@ A few things to note:
 - `.v` - number primitive inside the custom type
 - `._` - must be appended at the end of the expression to clear the `Signal` object. Returns result of `#converter`.   
 ### Structure:    
-- `Signal` - global object that records every conversion/coercion.
+- `Signal` - global object that records last conversion/coercion.
 - `#converter` - checks `Signal` to confirm conversion is allowed. Returns `.v` if true, else returns `NaN`.
 ```javascript
 let test = new Int(6.3);
