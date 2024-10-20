@@ -15,7 +15,7 @@ A few things to note:
 - `Signal` - global object that records last conversion/coercion.
 - `#converter` - checks `Signal` to confirm conversion is allowed. Returns `.v` if true, else returns `NaN`.
 ```javascript
-let test = new Int(6.3);
+const test = new Int(6.3);
 const float = new Float(7.7);
 const int = new test.t(9.8); // converts number to a custom type
 const converted = new float.t(int); // converts custom type to a custom type
@@ -23,6 +23,9 @@ const res = test + int + float._; // expression fails because of type conflict
 const res2 = int + int + int + test._;
 const res3 = int + 5 + int + int + int._;
 const res4 = 5 + float._;
-const res5 = float + 5; // sets up the next type to be a NaN, missing ._
-const res6 = int._ + 5;
+const isix = (6.7).int; // repackages a number to be of Int "type"
+const fsix = (6.7).float; // repackages a number to be of Float "type"
+const res5 = ((float / 2) * 7 + float).int; // works on expresions, eliminates the need for ._
+const res6 = float + 5; // sets up the next type to be a NaN, missing ._
+const res7 = int._ + 5;
 ```
