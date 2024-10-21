@@ -8,11 +8,10 @@ A few things to note:
 - Here conversion === coercion and type == class.
 ### Syntax:
 - `<var>.t` - type of the variable, actually references the `<var>.constructor`
-- `<var>.v` - number primitive inside the custom type, read only, will trow a `TypeError` when trying to assign a new value
-  This is done for safety reasons. For example:
-  If you have 10 different variablespointing to `const float`, you might accidentally write `<var>.v = 79` and that will change the value of other 9 variables.
-  Objects are passed by reference, the restriction lets us avoid the ripple effect of changing a value.
-  We ensure that every next variable pointing to one instance of custom type, will have the same behaviour as creating variables pointing to a primitive.
+- `<var>.v` - number primitive inside the custom type, read only, will trow a `TypeError` when trying to assign a new value This is done for safety reasons. For example:
+  - If you have 10 different variablespointing to `const float`, you might accidentally write `<var>.v = 79` and that will change the value of other 9 variables.
+  - Objects are passed by reference, the restriction lets us avoid the ripple effect of changing a value.
+  - We ensure that every next variable pointing to one instance of custom type, will have the same behaviour as creating variables pointing to a primitive.
   If you need a new value of type `Float` you will have to use `new Float(<val>)` or `new float.t(<val>)` or `(<val>).float`
 - `<var>._` - must be appended to the last custom type in the expression, to clear the `Signal` object. Returns result of `#converter`
 - `(<num>).int` - getter attached to `Number` global object. Returns `<num>` converted to an `Int`, works on custom types and primitive numbers
