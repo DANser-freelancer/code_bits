@@ -70,8 +70,8 @@ To avoid breaking next expressions down the line you must end them with `._` or 
 Any of the `res13` assignments in the example work, with a few key differences:    
 - `._` - returns a number primitive
 - `.$` - returns an instance of the last used type, or `Number` for number primitives
-- `._`&`.$` - returns `Number`
-- `.$`&`._` - returns number primitive
+- `._` then `.$` - returns `Number`
+- `.$` then `._` - returns number primitive
 ```javascript
 let res13 = (int * 4 + int - int * 2).$;
 res13++;
