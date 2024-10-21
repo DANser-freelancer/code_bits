@@ -51,3 +51,6 @@ const res10 = (+res8).int; // a way to convert a string to custom type
 - `typeof float` - working as intended, mildly unexpected, returns `'object'`
 - `typeof +float` - working as intended, returns `'number'`
 - `float instanceof Float` - working as intended, returns `true`. Also `true` for `Number` and of course `false` for `Float`
+- `for in float` will do nothing
+- `'t' in float` will return `true`
+- `for of float` will throw an error as it is not iterable
