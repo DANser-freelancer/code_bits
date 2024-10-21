@@ -15,7 +15,7 @@ A few things to note:
   - Objects are passed by reference, the restriction lets us avoid the ripple effect of changing a value
   - We ensure that every next variable pointing to one instance of custom type, will have the same behaviour as creating variables pointing to a primitive
   - If you need a new value of type `Float` you will have to use `new Float(<val>)` or `new float.t(<val>)` or `(<val>).float`
-  - You can safely increment the `<var>` itself, which will convert it to a primitive or reassign it, which will drop the custom type object. More on that in the Advanced section
+  - You can safely increment the `<var>` itself, which will convert it to a primitive or reassign it, which will drop the custom type object. More on that in the [Advanced](#advanced-tech) section
 - `(<num>)._` - getter attached to `Number` global object
   - must be appended to the last custom type in the expression (in evaluation order) to clear `Signal.coercion`
   - returns result of `<var>.c`
