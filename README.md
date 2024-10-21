@@ -3,6 +3,8 @@ A few things to note:
 - You probably shouldn't use this in production, unless that's exactly what you want as a complicated behaviour for some of your custom objects.
 - Classes can be written as factories to avoid the `new` keyword.
 - I don't know if it works in async code or if it can work.
+- Unlike in typescript, this code will continue to work at runtime. Typescript just uses compiler notes to work out the types at compile time.
+  Typescript will get transpiled to javascript where all your types are gone.
 - Here conversion === coercion and type == class.
 ### Syntax:
 - `<var>.t` - type of the variable, actually references the `<var>.constructor`
