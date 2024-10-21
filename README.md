@@ -20,7 +20,7 @@ A few things to note:
 - `#converter` - checks `Signal` to confirm if conversion is allowed. Stores the currently converted type in `Signal.coercion`. Returns `.v` if true, else returns `NaN`.
 - `<var>.t` - a constructor of `<var>`
   - `<var>.t.name` - the name of the class. Used in the `#converter` to determine the type and check if it can be used with the preceding one, stored in `Signal.coercion`.
-    `<var>.t.(<val>)` - returns `<val>` converted to a new instance of the same type as `<var>`
+    `<var>.t.(<num>)` - returns `<num>` converted to a new instance of the same type as `<var>`
 ```javascript
 const test = new Int(6.3);
 const float = new Float(7.7);
