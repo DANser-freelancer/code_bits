@@ -114,8 +114,9 @@ for (let i = 0; i < 4; i++) {
 const res15 = gen.return().value; // Int(39)
 ```
 ### Bonus:      
-- `(1)._` or `(1).$` or `(1).str` etc. - can be used as a nameless operation to clean up `Signal.coercion`, to make sure that next expressions don't break.
-- `Signal.coercion` can be manually set to `null` anywhere, to clear the coercion record.
+- `(1)._` or `(1).$` or `(1).str` etc. - can be used as a nameless operation to clean up `Signal.coercion`, to make sure that next expressions don't break
+- `Signal.coercion` can be manually set to `null` anywhere, to clear the coercion record
+- `1?.$` - the `().` around number primitives can be replaced by `?.` operator
 - `+float` - unary operator coercion, works the same way as with numbers. Returns number primitive value
 - `''+float` - string unary operator coercion, works the same way as with numbers. Returns string primitive value
 - `typeof float` - working as intended, mildly unexpected, returns `'object'`
