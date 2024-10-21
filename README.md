@@ -3,7 +3,7 @@ A few things to note:
 - You probably shouldn't use this in production, unless that's exactly what you want as a complicated behaviour for some of your custom objects.
 - Classes can be written as factories to avoid the `new` keyword.
 - I don't know if it works in async code or if it can work.
-- Here conversion === coercion.
+- Here conversion === coercion and type == class.
 ### Syntax:
 - `<var>.t` - type of the variable, actually references the `<var>.constructor`
 - `<var>.v` - number primitive inside the custom type
@@ -19,8 +19,8 @@ A few things to note:
   - `Signal.coercion` - a property to record the last converted custom type. Must equal `null` or `<var>.t.name`
 - `#converter` - checks `Signal` to confirm if conversion is allowed. Stores the currently converted type in `Signal.coercion`. Returns `.v` if true, else returns `NaN`.
 - `<var>.t` - a constructor of `<var>`
-  - `<var>.t.name` - the name of the class. Used in the `#converter` to determine the type and check if it can be used with the preceding one, stored in `Signal.coercion`.
-    `<var>.t.(<num>)` - returns `<num>` converted to a new instance of the same type as `<var>`
+  - `<var>.t.name` - the name of the type. Used in the `#converter` to determine the type and check if it can be used with the preceding one, stored in `Signal.coercion`.
+  - `<var>.t.(<num>)` - returns `<num>` converted to a new instance of the same type as `<var>`
 ```javascript
 const test = new Int(6.3);
 const float = new Float(7.7);
