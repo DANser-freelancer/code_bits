@@ -35,7 +35,8 @@ A few things to note:
   - clears `Signal.coercion`
 ### Structure:    
 - `Signal` - global object that records last conversion/coercion.
-  - `Signal.coercion` - a property to record the last converted custom type. Must equal `null` or `<var>.t.name`
+  - `Signal.coercion` - a property to record the last converted custom type. Must equal `null` or `<var>.t`
+  - used to check for coersion with `Signal.coercion.name` or convert values to the most recent custom type with `new Signal.coercion(num)`
 - `<var>.#converter` - checks `Signal.coercion` to confirm if conversion is allowed.
   - stores the currently converted type in `Signal.coercion`
   - returns `<var>.v` if true, else returns `NaN`
@@ -114,6 +115,7 @@ const res15 = gen.return().value; // Int(39)
 ```
 ### Bonus:      
 - `(1)._` or `(1).$` or `(1).str` etc. - can be used as a nameless operation to clean up `Signal.coercion`, to make sure that next expressions don't break.
+- `Signal.coercion` can be manually set to `null` anywhere, to clear the coercion record.
 - `+float` - unary operator coercion, works the same way as with numbers. Returns number primitive value
 - `''+float` - string unary operator coercion, works the same way as with numbers. Returns string primitive value
 - `typeof float` - working as intended, mildly unexpected, returns `'object'`
