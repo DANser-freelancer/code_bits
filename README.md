@@ -25,13 +25,13 @@ A few things to note:
   - if no `<var>.c` is found, returns a **new** instance of the last used custom type, or `Number`
 - `(<num>).int` - getter attached to `Number` global object.
   - returns `<num>` converted to an `Int`, works on custom types and primitive numbers
-  - has the effect of `._`
+  - clears `Signal.coercion`
 - `(<num>).float` - getter attached to `Number` global object
   - returns `<num>` converted to a `Float`, works on custom types and primitive numbers
-  - has the effect of `._`
+  - clears `Signal.coercion`
 - `(<num>).str` - getter attached to `Number` global object
   - returns `<num>` converted to a `String`, works on custom types and primitive numbers
-  - has the effect of `._`
+  - clears `Signal.coercion`
 ### Structure:    
 - `Signal` - global object that records last conversion/coercion.
   - `Signal.coercion` - a property to record the last converted custom type. Must equal `null` or `<var>.t.name`
@@ -105,7 +105,7 @@ for (let i = 0; i < 4; i++) {
 const res15 = gen.return().value;
 ```
 ### Bonus:      
-- `(1)._` or `(1).$` - can be used like a nameless operation to clean up `Signal.coercion`, to make sure that next expressions don't break.
+- `(1)._` or `(1).$` or `(1).str` etc. - can be used as a nameless operation to clean up `Signal.coercion`, to make sure that next expressions don't break.
 - `+float` - unary operator coercion, works the same way as with numbers. Returns number primitive value
 - `''+float` - string unary operator coercion, works the same way as with numbers. Returns string primitive value
 - `typeof float` - working as intended, mildly unexpected, returns `'object'`
