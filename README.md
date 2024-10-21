@@ -18,7 +18,8 @@ A few things to note:
   - You can safely increment the `<var>` itself, which will convert it to a primitive or reassign it, which will drop the custom type object. More on that in the [Advanced](#advanced-tech) section
 - `(<num>)._` - getter attached to `Number` global object
   - must be appended to the last custom type in the expression (in evaluation order) to clear `Signal.coercion`
-  - returns result of `<var>.c()`
+  - returns result of `<var>.c()` if available
+  - if no `<var>.c` is found, returns a number primitive
 - `(<num>).$` - getter attached to `Number` global object
   - must be appended to the last custom type in the expression (in evaluation order) to clear `Signal.coercion`
   - returns result of `<var>.c()` if available
