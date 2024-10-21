@@ -9,7 +9,7 @@ A few things to note:
 ### Syntax:
 - `<var>.t` - type of the variable, actually references the `<var>.constructor`
 - `<var>.v` - number primitive inside the custom type
-- `<var>._` - must be appended at the end of the expression to clear the `Signal` object. Returns result of `#converter`
+- `<var>._` - must be appended to the last custom type in the expression, to clear the `Signal` object. Returns result of `#converter`
 - `(<num>).int` - getter attached to `Number` global object. Returns `<num>` converted to an `Int`, works on custom types and primitive numbers
   - Has the effect of `._`
 - `(<num>).float` - getter attached to `Number` global object. Returns `<num>` converted to a `Float`, works on custom types and primitive numbers
