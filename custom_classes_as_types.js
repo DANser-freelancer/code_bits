@@ -26,7 +26,9 @@ class Int extends Number {
     num = num?.v ?? num;
     super(Math.floor(num));
     this.t = this.constructor;
-    this.v = Math.floor(num);
+    Object.defineProperty(this, 'v', {
+      value: Math.floor(num)
+    });
   }
 
   #converter() {
@@ -64,7 +66,9 @@ class Float extends Number {
     num = num?.v ?? num;
     super(num);
     this.t = this.constructor;
-    this.v = num;
+    Object.defineProperty(this, 'v', {
+      value: Math.floor(num)
+    });
   }
 
   #converter() {
@@ -112,7 +116,7 @@ const res6 = float + 5; // sets up the next type to be a NaN, missing ._
 const res7 = int._ + 5;
 const res8 = (int / 5 + 12).str; // repackages a number to be a String()
 const res9 = int.str; // works on custom types
-const res10 = (+res8).int; // a way to convert a String() to custom type
+const res10 = (+res8).int; // a way to convert a string to custom type
 
 console.log(converted);
 console.log(res);
