@@ -10,18 +10,18 @@ A few things to note:
 - `<var>.t` - type of the variable, actually references the `<var>.constructor`
 - `<var>.v` - number primitive inside the custom type
 - `<var>._` - must be appended at the end of the expression to clear the `Signal` object. Returns result of `#converter`
-- `(<num>).int` - getter attached to `Number` global object. Returns `<num>` converted to an `Int`, works on custom types and primitive numbers.
+- `(<num>).int` - getter attached to `Number` global object. Returns `<num>` converted to an `Int`, works on custom types and primitive numbers
   - Has the effect of `._`
-- `(<num>).float` - getter attached to `Number` global object. Returns `<num>` converted to a `Float`, works on custom types and primitive numbers.
+- `(<num>).float` - getter attached to `Number` global object. Returns `<num>` converted to a `Float`, works on custom types and primitive numbers
   - Has the effect of `._`
-- `(<num>).str` - getter attached to `Number` global object. Returns `<num>` converted to a `String`, works on custom types and primitive numbers.
+- `(<num>).str` - getter attached to `Number` global object. Returns `<num>` converted to a `String`, works on custom types and primitive numbers
   - Has the effect of `._`
 ### Structure:    
 - `Signal` - global object that records last conversion/coercion.
   - `Signal.coercion` - a property to record the last converted custom type. Must equal `null` or `<var>.t.name`
-- `#converter` - checks `Signal` to confirm if conversion is allowed. Stores the currently converted type in `Signal.coercion`. Returns `.v` if true, else returns `NaN`.
+- `#converter` - checks `Signal` to confirm if conversion is allowed. Stores the currently converted type in `Signal.coercion`. Returns `.v` if true, else returns `NaN`
 - `<var>.t` - a constructor of `<var>`
-  - `<var>.t.name` - the name of the type. Used in the `#converter` to determine the type and check if it can be used with the preceding one, stored in `Signal.coercion`.
+  - `<var>.t.name` - the name of the type. Used in the `#converter` to determine the type and check if it can be used with the preceding one, stored in `Signal.coercion`
   - `<var>.t.(<num>)` - returns `<num>` converted to a new instance of the same type as `<var>`
 ```javascript
 const test = new Int(6.3);
@@ -41,3 +41,9 @@ const res8 = (int / 5 + 12).str; // repackages a number to be a String()
 const res9 = int.str; // works on custom types
 const res10 = (+res8).int; // a way to convert a String() to custom type
 ```
+### Bonus:      
+- `+float` - unary operator coercion, works the same way as with numbers. Returns number primitive value
+- `''+float` - string unary operator coercion, works the same way as with numbers. Returns string primitive value
+- `typeof float` - working as intended, mildly unexpected, returns `'object'`
+- `typeof +float` - working as intended, returns `'number'`
+- `float instanceof Float` - working as intended, returns `true`. Also `true` for `Number` and of course `false` for `Float`
