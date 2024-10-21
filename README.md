@@ -9,7 +9,7 @@ A few things to note:
 - Here conversion === coercion and type == class.
 ### Syntax:
 - `<var>.t` - type of the variable, actually references the `<var>.constructor`
-- `<var>.c` - returns `<var>.#converter` bound to the variable
+- `<var>.c` - (pending) `<var>.#converter` bound to the variable
 - `<var>.v` - number primitive inside the variable, read only, will trow a `TypeError` when trying to assign a new value. This is done for safety reasons. For example:
   - If you have 10 different variables pointing to `const float`, you might accidentally write `float.v = 79` and that will change the value of other 9 variables
   - Objects are passed by reference, the restriction lets us avoid the ripple effect of changing a value
@@ -18,10 +18,10 @@ A few things to note:
   - You can safely increment the `<var>` itself, which will convert it to a primitive or reassign it, which will drop the custom type object. More on that in the [Advanced](#advanced-tech) section
 - `(<num>)._` - getter attached to `Number` global object
   - must be appended to the last custom type in the expression (in evaluation order) to clear `Signal.coercion`
-  - returns result of `<var>.c`
+  - returns result of `<var>.c()`
 - `(<num>).$` - getter attached to `Number` global object
   - must be appended to the last custom type in the expression (in evaluation order) to clear `Signal.coercion`
-  - uses `<var>.c` if available returns the same
+  - returns result of `<var>.c()` if available
   - if no `<var>.c` is found, returns a **new** instance of the last used custom type, or `Number`
 - `(<num>).int` - getter attached to `Number` global object.
   - returns `<num>` converted to an `Int`, works on custom types and primitive numbers
@@ -35,10 +35,15 @@ A few things to note:
 ### Structure:    
 - `Signal` - global object that records last conversion/coercion.
   - `Signal.coercion` - a property to record the last converted custom type. Must equal `null` or `<var>.t.name`
-- `#converter` - checks `Signal.coercion` to confirm if conversion is allowed. Stores the currently converted type in `Signal.coercion`. Returns `.v` if true, else returns `NaN`
-- `<var>.t` - a constructor of `<var>`
-  - `<var>.t.name` - the name of the type. Used in the `#converter` to determine the type and check if it can be used with the preceding one, stored in `Signal.coercion`
+- `<var>.#converter` - checks `Signal.coercion` to confirm if conversion is allowed.
+  - stores the currently converted type in `Signal.coercion`
+  - returns `<var>.v` if true, else returns `NaN`
+- `<var>.t` - the constructor of `<var>`
+  - `<var>.t.name` - the name of the type (class).
+    - types are guaranteed to be unique, because you can't create 2 classes of the same name
   - `<var>.t.(<num>)` - returns `<num>` converted to a new instance of the same type as `<var>`
+- `<var.c>` - (pending) `<var>.#converter` bound to the variable.
+  - when executed returns result of `<var>.#converter()`
 ### Code:
 ```javascript
 const test = new Int(6.3);
