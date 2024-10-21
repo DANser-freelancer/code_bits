@@ -2,6 +2,7 @@ This is how you can make a system of custom "types" in vanilla javascript. It ev
 A few things to note:      
 - You probably shouldn't use this in production, unless that's exactly what you want as a complicated behaviour for some of your custom objects.
 - Classes can be written as factories to avoid the `new` keyword.
+- The process of creating a new type can be generalized, then put into an abstraction, and then the process will be less verbose.
 - I don't know if it works in async code or if it can work.
 - Unlike in typescript, this code will continue to work at runtime. Typescript just uses compiler notes to work out the types at compile time.
   Typescript will get transpiled to javascript where all your types are gone.
