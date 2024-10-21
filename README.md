@@ -105,10 +105,12 @@ const cbk = (a) => {
 const gen = test.i;
 gen.next(cbk); // cold start
 for (let i = 0; i < 4; i++) {
+  // each iteration val = val * 1.6
   const out = gen.next(cbk).value;
   console.log(out);
 }
-const res15 = gen.return().value;
+// return does not operate on val, currently equal to 39.32160000000002
+const res15 = gen.return().value; // Int(39)
 ```
 ### Bonus:      
 - `(1)._` or `(1).$` or `(1).str` etc. - can be used as a nameless operation to clean up `Signal.coercion`, to make sure that next expressions don't break.
