@@ -8,7 +8,7 @@ A few things to note:
 - Here conversion === coercion and type == class.
 ### Syntax:
 - `<var>.t` - type of the variable, actually references the `<var>.constructor`
-- `<var>.v` - number primitive inside the custom type, read only, will trow a `TypeError` when trying to assign a new value. \n This is done for safety reasons. For example:
+- `<var>.v` - number primitive inside the custom type, read only, will trow a `TypeError` when trying to assign a new value. This is done for safety reasons. For example:
   - If you have 10 different variablespointing to `const float`, you might accidentally write `<var>.v = 79` and that will change the value of other 9 variables.
   - Objects are passed by reference, the restriction lets us avoid the ripple effect of changing a value.
   - We ensure that every next variable pointing to one instance of custom type, will have the same behaviour as creating variables pointing to a primitive.
