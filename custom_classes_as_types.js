@@ -14,6 +14,12 @@ Object.defineProperty(Number.prototype, 'float', {
     return new Float(this?.v ?? this.valueOf());
   }
 });
+Object.defineProperty(Number.prototype, 'str', {
+  get() {
+    Signal.coercion = null;
+    return new String(this);
+  }
+});
 
 class Int extends Number {
   constructor(num) {
@@ -40,7 +46,7 @@ class Int extends Number {
 
   [Symbol.toPrimitive](hint) {
     if (hint === 'string') {
-      return this[Symbol.toStringTag];
+      return `${this.v}`;
     } else {
       return this.#converter();
     }
@@ -78,7 +84,7 @@ class Float extends Number {
 
   [Symbol.toPrimitive](hint) {
     if (hint === 'string') {
-      return this[Symbol.toStringTag];
+      return `${this.v}`;
     } else {
       return this.#converter();
     }
@@ -99,11 +105,14 @@ const res = test + int + float._; // expression fails because of type conflict
 const res2 = int + int + int + test._;
 const res3 = int + 5 + int + int + int._;
 const res4 = 5 + float._;
-const isix = (6.7).int; // repackages a number to be of Int "type"
-const fsix = (6.7).float; // repackages a number to be of Float "type"
+const isix = (6.7).int; // repackages a number to be of Int type
+const fsix = (6.7).float; // repackages a number to be of Float type
 const res5 = ((float / 2) * 7 + float).int; // works on expresions, eliminates the need for ._
 const res6 = float + 5; // sets up the next type to be a NaN, missing ._
 const res7 = int._ + 5;
+const res8 = (int / 5 + 12).str; // repackages a number to be a String()
+const res9 = int.str; // works on custom types
+const res10 = (+res8).int; // a way to convert a String() to custom type
 
 console.log(converted);
 console.log(res);
@@ -113,3 +122,6 @@ console.log(res4);
 console.log(res5);
 console.log(res6);
 console.log(res7);
+console.log(res8);
+console.log(res9);
+console.log(res10);
