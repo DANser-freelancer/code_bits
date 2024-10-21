@@ -84,8 +84,8 @@ res13 = (res13 + 4).$;
 // res13 = res13._;
 // res13 = res13.$;
 ```
-As outlined earlier, increments to the `<var>.v` iself are prohibited.    
-Which is why I provided a very flexible generator for incrementing a custom type and getting it back as a **new** instance of the same custom type.    
+As outlined earlier, manipulation of `<var>.v` iself is prohibited.    
+Which is why I provided a very flexible generator for operating on a custom type and getting it back as a **new** instance of the same custom type.    
 - The generator is bound to the instance of the custom type from which you get that generator with `<var>.i`
   - this makes sure that no matter what happens around the generator `<generator>.return()`, the value will be of the same custom type as at the time of the call
   - the starting value is equal to `<var>.v`
