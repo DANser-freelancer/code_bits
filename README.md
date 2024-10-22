@@ -14,6 +14,7 @@ A short explanation for most code bits would be:
   - any value will be wrapped in a container, this is why *'primitive'* values have methods
     - `(7).toExponential(2)` will return a string `'7.00e+0'`
     - `'7.00e+0'.slice(0,3)` will return a string `'7.0'`
+    - `'7.0'.constructor(true)` will return a string `'true'`, guess why
     - `'7.0'.num` will return a number `7` but also log `'Silly Number'` because I edited the `.prototype` of this type of *'primitive'*
       - ```javascript
         Object.defineProperty(String.prototype, 'num', {
