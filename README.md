@@ -115,7 +115,7 @@ const res15 = gen.return().value; // Int(39)
 ```
 ### Bonus:      
 - `(1)._` or `(1).$` or `(1).str` etc. - can be used as a nameless operation to clean up `Signal.coercion`, to make sure that next expressions don't break
-  - `1?.$` - the `().` around number primitives can be replaced by `?.` operator
+  - the `().` around number primitives can be replaced by `?.` operator
   - and plain `.` is not allowed because it's a decimal separator instead of a property accessor
 - `Signal.coercion` can be manually set to `null` anywhere, to clear the coercion record
 - `+float` - unary operator coercion, works the same way as with numbers. Returns number primitive value
