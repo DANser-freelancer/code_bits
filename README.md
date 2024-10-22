@@ -27,5 +27,6 @@ A short explanation for most code bits would be:
     - `+'7.0'` will return a number `7` and the unary operator coercion is an exception because it's built deep into javascript, I can't modify it...
     - except that I **can modify** the behaviour of any type coercion (including `+<var>`) if I have access to instance properties
       - it looks stupid on primitives because you need to write `new String(<var>)` but it works wonders on `class`es as they return objects
-And yes that was the short answer, to be more precise and true I would need to read through official ECMAScript docs for implementation.
+    
+And yes that was the short answer, to be more precise and true I would need to read through official ECMAScript docs for implementation.    
 Those documents look so convoluted that I want to poke my eyes out.
