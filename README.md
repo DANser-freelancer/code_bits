@@ -11,6 +11,7 @@ Every branch has a copy of the permissive free licence.
 *Why does this work?*    
 A short explanation for most code bits would be:     
 - everything in javascript is secretly a `<Box>(<val>)`
+  - with one exception being `undefined`, while `null` doesn't seem to have a constructor it is typeof `'object'`
   - any value will be wrapped in a container, this is why *'primitive'* values have methods
     - `(7).toExponential(2)` will return a string `'7.00e+0'`
     - `'7.00e+0'.slice(0,3)` will return a string `'7.0'`
