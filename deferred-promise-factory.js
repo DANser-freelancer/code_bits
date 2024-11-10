@@ -9,6 +9,7 @@ function createDeferred(fn, problem) {
       problem ??
         ((err) => {
           console.error(err);
+          return err;
         })
     );
   controls[2] = promise;
