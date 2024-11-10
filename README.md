@@ -8,4 +8,4 @@
 - I waited for promise 2, there's the answer:    
   - this should be the last one
 #### Footnotes
-The format [resolve, reject, promise] is randomly made up. Every index is a **reference** that you can pass anywhere you want, `<function><function><Promise>`
+The format [resolve, reject, promise] is randomly made up. Every index is a **reference** that you can pass anywhere you want, `[<function>, <function>, <Promise>]`
