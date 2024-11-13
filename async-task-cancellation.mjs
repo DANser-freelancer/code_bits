@@ -19,6 +19,7 @@ function createDeferred(fn, problem) {
 const prom = createDeferred(
   (val) => {
     console.log(`prom 6 resolved`);
+    return val;
   },
   (reason) => {
     throw new Error(reason);
@@ -29,9 +30,14 @@ async function longTask(signal) {
   console.log(`executing long task`);
 
   const answer = await new Promise((resolve, reject) => {
-    signal.catch((reason) => {
-      reject(`Abort long task!\n ${reason}`);
-    });
+    signal
+      .then((val) => {
+        console.log(val);
+        resolve(7);
+      })
+      .catch((reason) => {
+        reject(`Abort long task!\n ${reason}`);
+      });
     setTimeout(() => {
       console.log(`long task response from endpoint`);
       resolve(1 + 1);
@@ -41,6 +47,9 @@ async function longTask(signal) {
   return answer;
 }
 
+// setTimeout(() => {
+//   prom[0](`i don't want to wait, 7 is fine`);
+// }, 2000);
 setTimeout(() => {
   prom[1](`i want to cancel this`);
 }, 2000);
