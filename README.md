@@ -15,7 +15,8 @@ This example is meant for **educational purposes**, and can be used to create cu
 Even though this code bit is technically perfectly functional, many programmers might find it too complicated and or cumbersome.      
 The mechanism is similar to how events like `'abort'` from `AbortController.signal` work.
 - you subscribe a promise to an event emitting object by giving it a callback with the `reject` handle to activate once the event is emitted
-- emitting an event just means calling every subscribed callback in a loop 
+- emitting an event just means calling every subscribed callback in a loop
+
 For real world creation of cancellable async functions I advise you to use `Promise` objects in combination with `AbortController` or some class extension of `EventEmitter` (nodejs).
 #### Rare use case      
 I recently had to implement a way to cancel a `Promise` awaiting a worker thread, in case the program got stuck because 10 operations were queued and each took 10 minutes to complete.        
