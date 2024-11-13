@@ -4,7 +4,7 @@ To build exposed `Promise`s I have used a technique shown in this [code bit](htt
 2. The main 'thread' *cancels* `longTask` after 2 sec and catches a cancellation exception.
    - `longTask` was awaiting a `Promise`, when that promise was initialized it was "hooked up" to `signal` promise
    - once the signal was rejected the `.catch()` microtask rejected the `await new Promise` part of `longTask`
-   - which in turn rejected the `await longTask()` promise and had to be handled like any other promise      
+   - which in turn rejected the `await longTask()` promise and had to be handled like any other promise rejection     
 3. The `timer` contained in the `longTask` still executes because it was set immediately, 2 sec before `longTask` was cancelled.        
    - this is nothing but a quirk of the testing environment
    - normally `longTask` would send something like a server request and await response
