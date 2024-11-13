@@ -4,7 +4,7 @@ In this code I have attempted to recreate task cancellation by using `Promise` o
 3. The `timer` contained in the `longTask` still executes because it was set immediately, 2 sec before `longTask` was cancelled.        
    - this is nothing but a quirk of the testing environment
    - normally `longTask` would send something like a server request and await response
-     - once `longTask` is cancelled it should then properly cancel whatever request it has made previously
+     - once `longTask` is cancelled it should then properly cancel whatever request it has made previously (which must be programmed by you)
 ### Note
 This is meant for educational purposes, and can be used to create custom async functions with behavior similar to `fetch` with `AbortController` signal.
 Even though this code bit is technically perfectly functional, many programmers might find it too complicated and or cumbersome.       
