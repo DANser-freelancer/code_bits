@@ -12,7 +12,7 @@ To build exposed `Promise`s I have used a technique shown in this [code bit](htt
      - once `longTask` is cancelled it should then properly cancel whatever request it has made previously (which must be programmed by you)
 #### Bonus       
 Because I used a `Promise` object, it is also possible to `resolve` a promise early.
-- it will skip the waiting period and let the `longTask` execute next code
+- it will skip the waiting period and let the `longTask` execute untill next `await` or `return`
 - it will also allow you to avoid rejection/cancellation exceptions and return some default value isntead
 ### Note
 This example is meant for **educational purposes**, and can be used to create custom async functions with behavior similar to `fetch` with `AbortController` signal.       
