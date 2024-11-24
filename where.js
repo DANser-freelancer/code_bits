@@ -6,15 +6,14 @@ const guy = {
 };
 
 function isAdultImperative(person, date) {
+  // guard clause, possible return
   if (person == undefined || !Number.isFinite(date)) {
     throw new Error('invalid input!');
   }
+  // condition
   const age = date - person.year;
-  if (age >= 18) {
-    return true;
-  } else {
-    return false;
-  }
+  // final return
+  return age >= 18;
 }
 
 function isAdultDeclarative(person, date) {
