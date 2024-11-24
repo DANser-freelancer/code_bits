@@ -21,7 +21,7 @@ function isAdultDeclarative(person, date) {
 
   // application logic, specific instructions
   function validIn() {
-    person == undefined || !Number.isFinite(date) ? false : true;
+    return person != undefined && Number.isFinite(date);
   }
   function error() {
     throw new Error('invalid input!');
