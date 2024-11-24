@@ -1,4 +1,4 @@
-`function` declarations in javascript are `hoisted`.       
+`function` declarations in javascript are `hoisted`:       
 - the function is interpeted and appended to the top of the enclosing function/global scope
 - this happens before the scope starts execution        
 
