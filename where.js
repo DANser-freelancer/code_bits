@@ -31,6 +31,7 @@ function isAdultDeclarative(person, date) {
   }
 }
 
-log(isAdultImperative(guy, 2024));
-log(isAdultDeclarative(guy, 2024));
-log(isAdultDeclarative(guy, 2009));
+log(isAdultImperative(guy, 2024)); // true
+log(isAdultDeclarative(guy, 2024)); // true
+log(isAdultDeclarative(guy, 2009)); // false
+log(isAdultDeclarative(guy, '2009')); // error
