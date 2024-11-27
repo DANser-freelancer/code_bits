@@ -93,6 +93,7 @@ function preprocess(fn) {
     log((adjust = str.length - fn.length));
   }
 
+  engine.macro.lastIndex = 0;
   return str.join('');
 }
 
