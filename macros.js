@@ -42,7 +42,7 @@ const adult = function (person, date) {
 // define`outsider`;
 // functional macros are called as functions, and expanded into primitive calculations
 const lambda = function (a, b) {
-  ~[mut`outsider`] == [a, d](a * d - 1);
+  ~[mut`outsider`] == [a, d]((a * d) / 1);
   ~[mut`outsider`] == 9;
   +[mut`outsider`] == 9;
   for (; outsider < 80; outsider++) {}
@@ -55,7 +55,13 @@ const preprocessEngine = {
   number: /^\d+$/,
   string: /^[\`\'\"].*[\`\'\"]$/i,
   exp: /\([\(\)\-\+\/\*\^\<\>\%a-z\d\s*]+\)$/i,
-  param: /^\[[a-z\,\s*]+\]/i
+  param: /^\[[a-z\,\s*]+\]/i,
+  test: {
+    numbers: /\([\(\)\-\+\/\*\^\<\>\%\d\s*]+\)$/
+  },
+  isNumbers(str) {
+    return this.test.numbers.test(str);
+  }
 };
 
 function preprocess(fn) {
@@ -84,8 +90,11 @@ function preprocess(fn) {
     const { sign, tag, name, val } = match.groups;
     const start = match.index + adjust;
     const end = engine.macro.lastIndex + adjust;
-    const exp = engine.exp.exec(val)[0];
-    const param = engine.param.exec(val)[0];
+    const exp = engine.exp.exec(val)?.[0];
+    const param = engine.param.exec(val)?.[0];
+    if (engine.isNumbers(exp)) {
+      log(exp, ' is numbers only.');
+    }
 
     log(match.index);
     log(engine.macro.lastIndex);
