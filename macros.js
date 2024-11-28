@@ -132,6 +132,18 @@ const preprocessEngine = {
     str.splice(2, 0, val);
     return str.join('');
   },
+  freeze() {
+    if (Object.isFrozen(this)) {
+      return this;
+    }
+    for (const key in this) {
+      const field = this[key];
+      if (typeof field === `object` && !(field instanceof RegExp)) {
+        Object.freeze(field);
+      }
+    }
+    return Object.freeze(this);
+  },
   tags: {
     final: `const `,
     mut: `let `
@@ -154,6 +166,6 @@ preprocessEngine.exp = new RegExp(
   )}])*${preprocessEngine.e_assert_end.source}`,
   'i'
 );
-Object.freeze(preprocessEngine);
+preprocessEngine.freeze();
 
 log(preprocess(lambda));
