@@ -49,12 +49,13 @@ const adult = function (person, date) {
 // _[`SQUARE`]
 // $[`SQUARE`]
 const lambda = function (a, b) {
-  +[`FbF`] == 5 * 5;
+  +[mut`FbF`] == 5 * 5;
   +[`SQUARE`] == [x](x * x);
   return SQUARE(a) + SQUARE(b);
 }.toString();
 
 //have to be aware of string "scope"
+// the parser
 function preprocess(fn) {
   // control sign (?<sign>[\~\!\-\+]{0,1})
   // definition tag (?<tag>mut)
@@ -79,17 +80,21 @@ function preprocess(fn) {
     const end = engine.macro.lastIndex + adjust;
     const exp = engine.exp.exec(val)?.[0];
     const param = engine.param.exec(val);
+
     if (engine.isNumbers(exp)) {
       const res = eval(exp);
       log(exp, ' is numbers only == ', res);
       TOKENS[name] = res;
     } else {
       log(exp, ' is a valid expression.');
+      TOKENS[name] = exp;
     }
+    const substr = `${engine.tags?.[tag] ?? `const `}${name} = ${
+      TOKENS?.[name] ?? ''
+    };`;
 
-    log(match.index);
-    log(engine.macro.lastIndex);
-    str.splice(start, end - start, 'forest');
+    log(substr);
+    str.splice(start, end - start, substr);
     log((adjust = str.length - fn.length));
   }
 
@@ -100,7 +105,7 @@ function preprocess(fn) {
 // just the lexer
 const preprocessEngine = {
   macro:
-    /(?<sign>[\~\!\-\+]{0,1})\[(?<tag>mut){0,1}\`(?<name>.*?)\`\]\s*\=\=\s*(?<val>.*?)\;/g,
+    /(?<sign>[\~\!\-\+]{0,1})\[(?<tag>mut|final){0,1}\`(?<name>.*?)\`\]\s*\=\=\s*(?<val>.*?)\;/g,
   string: /^[\`\'\"].*[\`\'\"]$/,
   param: /^\[([a-z\,\s*])+\]/i,
   special: /0x[a-f\d]+|0b\d+|0o\d+|(?:\d+\_\d+)/,
@@ -126,6 +131,10 @@ const preprocessEngine = {
     const str = src.split('');
     str.splice(2, 0, val);
     return str.join('');
+  },
+  tags: {
+    final: `const `,
+    mut: `let `
   }
 };
 preprocessEngine.num = new RegExp(
