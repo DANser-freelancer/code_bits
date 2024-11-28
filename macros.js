@@ -41,39 +41,70 @@ const adult = function (person, date) {
 // `${outsider}!()`;
 // define`outsider`;
 // functional macros are called as functions, and expanded into primitive calculations
+///////
+// ~[mut`outsider`] == [a](2 ** 2 / 1);
+// ~[mut`outsider`] == -4 * 0.5;
+// +[mut`outsider`] == [a]((a * a) / b.val - 1);
 const lambda = function (a, b) {
-  ~[mut`outsider`] == [a, d]((a * d) / 1);
-  ~[mut`outsider`] == 9;
-  +[mut`outsider`] == 9;
-  for (; outsider < 80; outsider++) {}
-  log(outsider);
-  return a + b;
+  +[mut`SQUARE`] == [x](0xf + 0b100);
+  return SQUARE(a) + SQUARE(b);
 }.toString();
 
+// just the lexer
 const preprocessEngine = {
-  macro: /(?<sign>[\~\!\-\+]{0,1})\[(?<tag>mut)\`(?<name>.*?)\`\]\s*\=\=\s*(?<val>.*?)\;/g,
-  number: /^\d+$/,
-  string: /^[\`\'\"].*[\`\'\"]$/i,
-  exp: /\([\(\)\-\+\/\*\^\<\>\%a-z\d\s*]+\)$/i,
+  macro:
+    /(?<sign>[\~\!\-\+]{0,1})\[(?<tag>mut)\`(?<name>.*?)\`\]\s*\=\=\s*(?<val>.*?)\;/g,
+  string: /^[\`\'\"].*[\`\'\"]$/,
   param: /^\[[a-z\,\s*]+\]/i,
-  test: {
-    numbers: /\([\(\)\-\+\/\*\^\<\>\%\d\s*]+\)$/
-  },
+  special: /0x[a-f\d]+|0b\d+|0o\d+|(?:\d+\_\d+)/,
+  e_assert_end: /(?:\w|\)|\$|\s*)$/,
+  e_extra: /\w\$/,
+  exp: null,
+  n_edge_operators: /\-\+\~/,
+  n_operators: /\/\*\^\<\>\&\|\%/,
+  n_extra: /\s*\.\(\)/,
+  n_assert_end: /(?:\d|\)|\s*)$/,
+  num: null,
   isNumbers(str) {
-    return this.test.numbers.test(str);
+    return this.num.test(str);
+  },
+  build(...names) {
+    const str = new Array(names.length);
+    for (let n = 0; n < names.length; n++) {
+      str[n] = this[names[n]].source;
+    }
+    return str.join('');
+  },
+  stitch(src, val) {
+    const str = src.split('');
+    str.splice(2, 0, val);
+    return str.join('');
   }
 };
+preprocessEngine.num = new RegExp(
+  `^(?:${preprocessEngine.special.source}|[${preprocessEngine.build(
+    `n_edge_operators`,
+    `n_operators`,
+    `n_extra`
+  )}])*${preprocessEngine.n_assert_end.source}`,
+  'i'
+);
+preprocessEngine.exp = new RegExp(
+  `(?:${preprocessEngine.special.source}|[${preprocessEngine.build(
+    `n_edge_operators`,
+    `n_operators`,
+    `n_extra`,
+    `e_extra`
+  )}])*${preprocessEngine.e_assert_end.source}`,
+  'i'
+);
+Object.freeze(preprocessEngine);
 
 function preprocess(fn) {
-  // use the same source string to match,
-  // adjust returned indexes by a local variable
-  // that records the difference in length between source and target string
-
   // control sign (?<sign>[\~\!\-\+]{0,1})
   // definition tag (?<tag>mut)
   // anything between ticks \`(?<name>.*?)\`
   // anything after equals, untill semicolon \s*\=\=\s*(?<val>.*?)\;
-
   // match.index === first inclusive character matched
   // regex.lastIndex === first inclusive character right after the match
   const str = fn.split('');
@@ -93,7 +124,9 @@ function preprocess(fn) {
     const exp = engine.exp.exec(val)?.[0];
     const param = engine.param.exec(val)?.[0];
     if (engine.isNumbers(exp)) {
-      log(exp, ' is numbers only.');
+      log(exp, ' is numbers only == ', eval(exp));
+    } else {
+      log(exp, ' is a valid expression.');
     }
 
     log(match.index);
