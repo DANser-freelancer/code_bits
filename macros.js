@@ -117,6 +117,12 @@ const preprocessEngine = {
   n_extra: /\s*\.\(\)\d/,
   n_assert_end: /(?:\d$|\)$|\s$)/,
   num: null,
+  tags: {
+    final: `const `,
+    mut: `let `
+  },
+  v_boundary: /\(|\{|\,|\;|\+|\s*/,
+  vnames: null,
   isNumbers(str) {
     return this.num.test(str);
   },
@@ -143,10 +149,6 @@ const preprocessEngine = {
       }
     }
     return Object.freeze(this);
-  },
-  tags: {
-    final: `const `,
-    mut: `let `
   }
 };
 preprocessEngine.num = new RegExp(
@@ -166,6 +168,15 @@ preprocessEngine.exp = new RegExp(
   )}])*${preprocessEngine.e_assert_end.source}`,
   'i'
 );
+preprocessEngine.vnames = new RegExp(
+  `(?<word>(?<=${preprocessEngine.v_boundary.source})\\w+(?=${preprocessEngine.v_boundary.source}))+`,
+  'g'
+);
 preprocessEngine.freeze();
 
 log(preprocess(lambda));
+
+// {(lay.abc + delay)(asd),
+//   slay;
+//   pray;
+//   }
