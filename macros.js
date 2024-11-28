@@ -43,27 +43,74 @@ const adult = function (person, date) {
 // functional macros are called as functions, and expanded into primitive calculations
 ///////
 // ~[mut`outsider`] == [a](2 ** 2 / 1);
-// ~[mut`outsider`] == -4 * 0.5;
+// -[mut`outsider`] == -4 * 0.5;
 // +[mut`outsider`] == [a]((a * a) / b.val - 1);
+// ![mut`outsider`] == [a]((a * a) / b.val - 1);
+// _[`SQUARE`]
+// $[`SQUARE`]
 const lambda = function (a, b) {
-  +[mut`SQUARE`] == [x](0xf + 0b100);
+  +[`FbF`] == 5 * 5;
+  +[`SQUARE`] == [x](x * x);
   return SQUARE(a) + SQUARE(b);
 }.toString();
+
+//have to be aware of string "scope"
+function preprocess(fn) {
+  // control sign (?<sign>[\~\!\-\+]{0,1})
+  // definition tag (?<tag>mut)
+  // anything between ticks \`(?<name>.*?)\`
+  // anything after equals, untill semicolon \s*\=\=\s*(?<val>.*?)\;
+  // match.index === first inclusive character matched
+  // regex.lastIndex === first inclusive character right after the match
+  const str = fn.split('');
+  const engine = preprocessEngine;
+  const TOKENS = {};
+  let old = 0;
+  let adjust = 0;
+  let match;
+
+  while ((match = engine.macro.exec(fn)) != undefined) {
+    if (old === engine.macro.lastIndex) {
+      throw new RangeError('Detected infinite preprocessor loop');
+    }
+    old = engine.macro.lastIndex;
+    const { sign, tag, name, val } = match.groups;
+    const start = match.index + adjust;
+    const end = engine.macro.lastIndex + adjust;
+    const exp = engine.exp.exec(val)?.[0];
+    const param = engine.param.exec(val);
+    if (engine.isNumbers(exp)) {
+      const res = eval(exp);
+      log(exp, ' is numbers only == ', res);
+      TOKENS[name] = res;
+    } else {
+      log(exp, ' is a valid expression.');
+    }
+
+    log(match.index);
+    log(engine.macro.lastIndex);
+    str.splice(start, end - start, 'forest');
+    log((adjust = str.length - fn.length));
+  }
+
+  engine.macro.lastIndex = 0;
+  return str.join('');
+}
 
 // just the lexer
 const preprocessEngine = {
   macro:
-    /(?<sign>[\~\!\-\+]{0,1})\[(?<tag>mut)\`(?<name>.*?)\`\]\s*\=\=\s*(?<val>.*?)\;/g,
+    /(?<sign>[\~\!\-\+]{0,1})\[(?<tag>mut){0,1}\`(?<name>.*?)\`\]\s*\=\=\s*(?<val>.*?)\;/g,
   string: /^[\`\'\"].*[\`\'\"]$/,
-  param: /^\[[a-z\,\s*]+\]/i,
+  param: /^\[([a-z\,\s*])+\]/i,
   special: /0x[a-f\d]+|0b\d+|0o\d+|(?:\d+\_\d+)/,
-  e_assert_end: /(?:\w|\)|\$|\s*)$/,
+  e_assert_end: /(?:\w$|\)$|\$$|\s$)/,
   e_extra: /\w\$/,
   exp: null,
   n_edge_operators: /\-\+\~/,
   n_operators: /\/\*\^\<\>\&\|\%/,
-  n_extra: /\s*\.\(\)/,
-  n_assert_end: /(?:\d|\)|\s*)$/,
+  n_extra: /\s*\.\(\)\d/,
+  n_assert_end: /(?:\d$|\)$|\s$)/,
   num: null,
   isNumbers(str) {
     return this.num.test(str);
@@ -99,44 +146,5 @@ preprocessEngine.exp = new RegExp(
   'i'
 );
 Object.freeze(preprocessEngine);
-
-function preprocess(fn) {
-  // control sign (?<sign>[\~\!\-\+]{0,1})
-  // definition tag (?<tag>mut)
-  // anything between ticks \`(?<name>.*?)\`
-  // anything after equals, untill semicolon \s*\=\=\s*(?<val>.*?)\;
-  // match.index === first inclusive character matched
-  // regex.lastIndex === first inclusive character right after the match
-  const str = fn.split('');
-  const engine = preprocessEngine;
-  let old = 0;
-  let adjust = 0;
-  let match;
-
-  while ((match = engine.macro.exec(fn)) != undefined) {
-    if (old === engine.macro.lastIndex) {
-      throw new RangeError('Detected infinite preprocessor loop');
-    }
-    old = engine.macro.lastIndex;
-    const { sign, tag, name, val } = match.groups;
-    const start = match.index + adjust;
-    const end = engine.macro.lastIndex + adjust;
-    const exp = engine.exp.exec(val)?.[0];
-    const param = engine.param.exec(val)?.[0];
-    if (engine.isNumbers(exp)) {
-      log(exp, ' is numbers only == ', eval(exp));
-    } else {
-      log(exp, ' is a valid expression.');
-    }
-
-    log(match.index);
-    log(engine.macro.lastIndex);
-    str.splice(start, end - start, 'forest');
-    log((adjust = str.length - fn.length));
-  }
-
-  engine.macro.lastIndex = 0;
-  return str.join('');
-}
 
 log(preprocess(lambda));
