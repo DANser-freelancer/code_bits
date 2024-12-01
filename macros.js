@@ -89,9 +89,7 @@ function preprocess(fn) {
       log(exp, ' is a valid expression.');
       TOKENS[name] = exp;
     }
-    const substr = `${engine.tags?.[tag] ?? `const `}${name} = ${
-      TOKENS?.[name] ?? ''
-    };`;
+    const substr = `${engine.tags?.[tag] ?? `const `}${name} = ${TOKENS[name]};`;
 
     log(substr);
     str.splice(start, end - start, substr);
@@ -105,10 +103,11 @@ function preprocess(fn) {
 // just the lexer
 const preprocessEngine = {
   macro:
-    /(?<sign>[\~\!\-\+]{0,1})\[(?<tag>mut|final){0,1}\`(?<name>.*?)\`\]\s*\=\=\s*(?<val>.*?)\;/g,
-  string: /^[\`\'\"].*[\`\'\"]$/,
-  param: /^\[([a-z\,\s*])+\]/i,
+    /(?<sign>[~!-+]?)\[(?<tag>mut|final)?\`(?<name>.*?)\`\]\s*\=\=\s*(?<val>.*?)\;/g,
+  string: /^[`'"].*[`'"]$/,
+  param: /^\[([a-z,\s*])+\]/i,
   special: /0x[a-f\d]+|0b\d+|0o\d+|(?:\d+\_\d+)/,
+  boundary: /\(|\{|\[|\]|\}|\)|\,|\;|\s+/,
   e_assert_end: /(?:\w$|\)$|\$$|\s$)/,
   e_extra: /\w\$/,
   exp: null,
@@ -121,8 +120,10 @@ const preprocessEngine = {
     final: `const `,
     mut: `let `
   },
-  v_boundary: /\(|\{|\,|\;|\+|\s*/,
-  vnames: null,
+  matchName(name) {
+    name = String(name).replaceAll('$', '\\$');
+    return new RegExp(`(?<word>(?<![a-zA-Z_$\\d])${name}(?![a-zA-Z_$\\d]))+`, 'g');
+  },
   isNumbers(str) {
     return this.num.test(str);
   },
@@ -168,12 +169,9 @@ preprocessEngine.exp = new RegExp(
   )}])*${preprocessEngine.e_assert_end.source}`,
   'i'
 );
-preprocessEngine.vnames = new RegExp(
-  `(?<word>(?<=${preprocessEngine.v_boundary.source})\\w+(?=${preprocessEngine.v_boundary.source}))+`,
-  'g'
-);
 preprocessEngine.freeze();
 
+log(preprocessEngine.matchName('bar_$$56'));
 log(preprocess(lambda));
 
 // {(lay.abc + delay)(asd),
