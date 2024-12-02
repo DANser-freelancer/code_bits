@@ -51,7 +51,9 @@ const adult = function (person, date) {
 const lambda = function (a, b) {
   +[mut`FbF`] == 5 * 5;
   +[`SQUARE`] == [x](x * x);
-  return SQUARE(a) + SQUARE(b);
+  console.log(SQUARE(7));
+  -[`SQUARE`] == [x](x * x * x);
+  return SQUARE(a) + SQUARE(b) - FbF;
 }.toString();
 
 //have to be aware of string "scope"
@@ -63,9 +65,9 @@ function preprocess(fn) {
   // anything after equals, untill semicolon \s*\=\=\s*(?<val>.*?)\;
   // match.index === first inclusive character matched
   // regex.lastIndex === first inclusive character right after the match
-  const str = fn.split('');
   const engine = preprocessEngine;
-  const TOKENS = {};
+  const TOKENS = Object.create(null);
+  const str = fn.split('');
   let old = 0;
   let adjust = 0;
   let match;
@@ -77,23 +79,64 @@ function preprocess(fn) {
     old = engine.macro.lastIndex;
     const { sign, tag, name, val } = match.groups;
     const start = match.index + adjust;
-    const end = engine.macro.lastIndex + adjust;
+    const end = match[0].length;
     const exp = engine.exp.exec(val)?.[0];
     const param = engine.param.exec(val);
+
+    const substr = '';
+
+    log(substr);
+    str.splice(start, end, substr);
+    log((adjust = str.length - fn.length + 1));
 
     if (engine.isNumbers(exp)) {
       const res = eval(exp);
       log(exp, ' is numbers only == ', res);
-      TOKENS[name] = res;
+      const data = { val: res.toString(), pos: start };
+      if (name in TOKENS) {
+        TOKENS[name].push(data);
+      } else {
+        TOKENS[name] = [data];
+      }
     } else {
       log(exp, ' is a valid expression.');
-      TOKENS[name] = exp;
+      // !TODO process the expression with required args
+      const data = { val: exp, pos: start };
+      if (name in TOKENS) {
+        TOKENS[name].push(data);
+      } else {
+        TOKENS[name] = [data];
+      }
     }
-    const substr = `${engine.tags?.[tag] ?? `const `}${name} = ${TOKENS[name]};`;
+    // const substr = `${engine.tags?.[tag] ?? `const `}${name} = ${TOKENS[name]};`;
+  }
 
-    log(substr);
-    str.splice(start, end - start, substr);
-    log((adjust = str.length - fn.length));
+  fn = str.join('');
+  old = 0;
+  adjust = 0;
+  for (const key in TOKENS) {
+    const replacer = preprocessEngine.matchName(key);
+    const token = TOKENS[key];
+    let match;
+    let oldIndex = 0;
+    let i = 0;
+    while ((match = replacer.exec(fn)) != undefined) {
+      const start = match.index + adjust;
+      const end = match[0].length;
+      // const end = replacer.lastIndex + adjust;
+      oldIndex = start;
+      if (oldIndex > token[i + 1]?.pos) {
+        i++;
+      }
+
+      const { pos, val } = token[i];
+      log(
+        `Word: ${match.groups.word}; index: ${oldIndex}; position: ${pos}; value: ${val}`
+      );
+      const substr = val;
+      str.splice(start, end, substr);
+      log((adjust = str.length - fn.length + 1));
+    }
   }
 
   engine.macro.lastIndex = 0;
@@ -122,7 +165,7 @@ const preprocessEngine = {
   },
   matchName(name) {
     name = String(name).replaceAll('$', '\\$');
-    return new RegExp(`(?<word>(?<![a-zA-Z_$\\d])${name}(?![a-zA-Z_$\\d]))+`, 'g');
+    return new RegExp(`(?<word>(?<![a-zA-Z_$\\d.])${name}(?![a-zA-Z_$\\d]))+`, 'g');
   },
   isNumbers(str) {
     return this.num.test(str);
@@ -174,7 +217,6 @@ preprocessEngine.freeze();
 log(preprocessEngine.matchName('bar_$$56'));
 log(preprocess(lambda));
 
-// {(lay.abc + delay)(asd),
-//   slay;
-//   pray;
-//   }
+// console.log(x * x)E(7));
+//   -
+//   retur(x * x * x)RE(a) (x * x * x)RE(b)25FbF;
