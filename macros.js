@@ -72,13 +72,14 @@ function preprocess(fn) {
   let adjust = 0;
   let match;
 
+  /* ### DEFINE */
   while ((match = engine.macro.exec(fn)) != undefined) {
     if (old === engine.macro.lastIndex) {
       throw new RangeError('Detected infinite preprocessor loop');
     }
     old = engine.macro.lastIndex;
     const { sign, tag, name, val } = match.groups;
-    const start = match.index + adjust;
+    const start = match.index - adjust;
     const end = match[0].length;
     const exp = engine.exp.exec(val)?.[0];
     const param = engine.param.exec(val);
@@ -86,8 +87,8 @@ function preprocess(fn) {
     const substr = '';
 
     log(substr);
-    str.splice(start, end, substr);
-    log((adjust = str.length - fn.length + 1));
+    str.splice(start, end);
+    log((adjust += end));
 
     if (engine.isNumbers(exp)) {
       const res = eval(exp);
@@ -114,6 +115,7 @@ function preprocess(fn) {
   fn = str.join('');
   old = 0;
   adjust = 0;
+  /* ### INLINE */
   for (const key in TOKENS) {
     const replacer = preprocessEngine.matchName(key);
     const token = TOKENS[key];
@@ -135,7 +137,7 @@ function preprocess(fn) {
       );
       const substr = val;
       str.splice(start, end, substr);
-      log((adjust = str.length - fn.length + 1));
+      log((adjust = str.length - fn.length));
     }
   }
 
@@ -146,7 +148,7 @@ function preprocess(fn) {
 // just the lexer
 const preprocessEngine = {
   macro:
-    /(?<sign>[~!-+]?)\[(?<tag>mut|final)?\`(?<name>.*?)\`\]\s*\=\=\s*(?<val>.*?)\;/g,
+    /(?<sign>[~!+]|\-){1}\[(?<tag>mut|final)?\`(?<name>.*?)\`\]\s*\=\=\s*(?<val>.*?)\;/g,
   string: /^[`'"].*[`'"]$/,
   param: /^\[([a-z,\s*])+\]/i,
   special: /0x[a-f\d]+|0b\d+|0o\d+|(?:\d+\_\d+)/,
