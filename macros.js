@@ -1,58 +1,27 @@
-const { log, error } = console;
+const { log, error, time, timeEnd } = console;
 
-const guy = {
-  name: 'Ben',
-  year: 2002
-};
-
-function where(fn, args) {
-  // const regex = /(?<=\().*?(?=\))/;
-  // const params = fn.toString().match(regex)[0].split(', ');
-  // arg0, arg1, arg2... body
-  const stringified = fn.toString();
-  let addition = [];
-  for (const key in args) {
-    addition.push(`const ${key} = ${args[key]}`);
-  }
-  addition = addition.join(';\n');
-  const final = stringified.replace('{', `{\n${addition}`);
-  const extended = new Function(`"use strict"; return ${final}`)();
-  log(extended.toString());
-  return extended;
-}
-
-const normal = function (person, date) {
-  if (person == undefined || !Number.isFinite(date)) {
-    error(`wrong input!`);
-    return;
-  }
-  if (date - person.year >= 18) {
-    log(`ok, ${date - person.year}yrs old`);
-  } else {
-    error('not ok');
-  }
-};
-
-const adult = function (person, date) {
-  return validInput ? age : error;
-};
-
-// const outsider = 66;
-// `${outsider}!()`;
-// define`outsider`;
 // functional macros are called as functions, and expanded into primitive calculations
 ///////
 // ~[mut`outsider`] == [a](2 ** 2 / 1);
 // -[mut`outsider`] == -4 * 0.5;
-// +[mut`outsider`] == [a]((a * a) / b.val - 1);
+// +[final`outsider`] == [a]((a * a) / b.val - 1);
 // ![mut`outsider`] == [a]((a * a) / b.val - 1);
-// _[`SQUARE`]
-// $[`SQUARE`]
+// _[mut`SQUARE`]
+// $[fun`SQUARE`]
+/*
+  + define
+  - undefine
+  ~ flip on/off
+  _ define with old value if undefined
+  ! logic on the signs, e.g. !+ is def, !- is undef (!!+), expands to bool in real code
+*/
 const lambda = function (a, b) {
+  !+[final`blob`] == a - 8;
   +[mut`FbF`] == 5 * 5;
   +[`SQUARE`] == [x](x * x);
   console.log(SQUARE(7));
   -[`SQUARE`] == [x](x * x * x);
+  console.log(blob + 11);
   return SQUARE(a) + SQUARE(b) - FbF;
 }.toString();
 
@@ -68,102 +37,114 @@ function preprocess(fn) {
   const engine = preprocessEngine;
   const TOKENS = Object.create(null);
   const str = fn.split('');
-  let old = 0;
-  let adjust = 0;
+  let oldIndex = -1;
+  let adjustString = 0;
   let match;
 
   /* ### DEFINE */
   while ((match = engine.macro.exec(fn)) != undefined) {
-    if (old === engine.macro.lastIndex) {
+    if (oldIndex === engine.macro.lastIndex) {
       throw new RangeError('Detected infinite preprocessor loop');
     }
-    old = engine.macro.lastIndex;
+    oldIndex = engine.macro.lastIndex;
+
     const { sign, tag, name, val } = match.groups;
-    const start = match.index - adjust;
+    const start = match.index - adjustString;
     const end = match[0].length;
     const exp = engine.exp.exec(val)?.[0];
     const param = engine.param.exec(val);
-
     const substr = '';
-
-    log(substr);
     str.splice(start, end);
-    log((adjust += end));
+    log((adjustString += end));
 
     if (engine.isNumbers(exp)) {
       const res = eval(exp);
-      log(exp, ' is numbers only == ', res);
       const data = { val: res.toString(), pos: start };
       if (name in TOKENS) {
         TOKENS[name].push(data);
       } else {
         TOKENS[name] = [data];
+        TOKENS[name].i = 0;
       }
     } else {
-      log(exp, ' is a valid expression.');
       // !TODO process the expression with required args
       const data = { val: exp, pos: start };
       if (name in TOKENS) {
         TOKENS[name].push(data);
       } else {
         TOKENS[name] = [data];
+        TOKENS[name].i = 0;
       }
     }
     // const substr = `${engine.tags?.[tag] ?? `const `}${name} = ${TOKENS[name]};`;
   }
 
+  oldIndex = -1;
+  adjustString = 0;
   fn = str.join('');
-  old = 0;
-  adjust = 0;
+  log(fn);
   /* ### INLINE */
-  for (const key in TOKENS) {
-    const replacer = preprocessEngine.matchName(key);
-    const token = TOKENS[key];
-    let match;
-    let oldIndex = 0;
-    let i = 0;
-    while ((match = replacer.exec(fn)) != undefined) {
-      const start = match.index + adjust;
-      const end = match[0].length;
-      // const end = replacer.lastIndex + adjust;
-      oldIndex = start;
-      if (oldIndex > token[i + 1]?.pos) {
-        i++;
-      }
-
-      const { pos, val } = token[i];
-      log(
-        `Word: ${match.groups.word}; index: ${oldIndex}; position: ${pos}; value: ${val}`
-      );
-      const substr = val;
-      str.splice(start, end, substr);
-      log((adjust = str.length - fn.length));
+  // match in forward-step every word, inline as needed
+  while ((match = engine.name.exec(fn)) != undefined) {
+    if (oldIndex === engine.name.lastIndex) {
+      throw new RangeError('Detected infinite preprocessor loop');
     }
+
+    oldIndex = engine.macro.lastIndex;
+
+    const key = match.groups.word;
+    if (!(key in TOKENS)) continue;
+
+    const token = TOKENS[key];
+    let i = token.i;
+    const start = match.index + adjustString;
+    const end = match[0].length;
+
+    // switch to the next declaration of the macro
+    if (start > token[i + 1]?.pos) token.i = ++i;
+
+    const { pos, val } = token[i];
+
+    log(`Word: ${key}; index: ${start}; position: ${pos}; value: ${val}`);
+    const substr = val;
+    str.splice(start, end, substr);
+    adjustString = str.length - fn.length;
   }
 
+  // resets on the engine
+  engine.name.lastIndex = 0;
   engine.macro.lastIndex = 0;
-  return str.join('');
+  const result = str.join('').replaceAll(engine.space, '\n');
+  engine.space.lastIndex = 0;
+
+  return result;
 }
 
-// just the lexer
+// just the lexer, with most regex machines prebuilt and kept
 const preprocessEngine = {
   macro:
-    /(?<sign>[~!+]|\-){1}\[(?<tag>mut|final)?\`(?<name>.*?)\`\]\s*\=\=\s*(?<val>.*?)\;/g,
+    /(?<sign>[~!+]|\-){1,2}\[(?<tag>mut|final)?\`(?<name>.*?)\`\]\s*\=\=\s*(?<val>.*?)\;/g,
+  // ignores function parameters and namespaces through any combination of ?.[
+  name: /(?:(?:function\s*\(.*\)\s*\{\s*)|(?:\s*\(.*\)\s*=>\s*\{\s*))?(?<!(?:\w\??\.?\[?))(?<word>\b(?!\d)\w+\d*\b)/g,
+  space: /\n\s*\n/g,
   string: /^[`'"].*[`'"]$/,
   param: /^\[([a-z,\s*])+\]/i,
   special: /0x[a-f\d]+|0b\d+|0o\d+|(?:\d+\_\d+)/,
   boundary: /\(|\{|\[|\]|\}|\)|\,|\;|\s+/,
   e_assert_end: /(?:\w$|\)$|\$$|\s$)/,
   e_extra: /\w\$/,
+  // expression that doesn't eval
   exp: null,
   n_edge_operators: /\-\+\~/,
   n_operators: /\/\*\^\<\>\&\|\%/,
   n_extra: /\s*\.\(\)\d/,
   n_assert_end: /(?:\d$|\)$|\s$)/,
+  // expression that does eval
   num: null,
   tags: {
     final: `const `,
-    mut: `let `
+    mut: `let `,
+    fun: `function `
   },
   matchName(name) {
     name = String(name).replaceAll('$', '\\$');
@@ -216,7 +197,6 @@ preprocessEngine.exp = new RegExp(
 );
 preprocessEngine.freeze();
 
-log(preprocessEngine.matchName('bar_$$56'));
 log(preprocess(lambda));
 
 // console.log(x * x)E(7));
