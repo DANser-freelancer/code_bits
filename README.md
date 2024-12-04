@@ -8,4 +8,4 @@ And for each alternative path we have to provide inline logic, unless we separat
       
 We can take this concept a step further and rebuild functions with a more intuitive syntax, via a globally available method.        
 Any valid code can be passed to `.where()` in string form.        
-Bonus: To see generated files with syntax highlighting - you can `throw` inside a reconstructed function, and enable debugger pauses on exceptions.
+Bonus: To see generated function files in a nicer view you can `throw` inside a reconstructed function, and enable debugger pauses on exceptions.
