@@ -12,4 +12,4 @@ A short explanation for most code bits would be:
 - *almost* everything in javascript is an object, one way or another.
 - `.prototype` chains are useful to globally alter behavior of objects (including primitives as they are boxed).
 - `constructor.name`, `instanceof`, `name`, and `typeof` can all be used in different scenarios to precisely determine what object you are dealing with.
-- JavaScript's heavy lean into flexibility allows me to do some metaprogramming using code-as-data, monkeypatching, reflection, granular property control, and some "magic methods".
+- JavaScript's heavy lean into flexibility allows me to do some metaprogramming using granular property control, some "magic methods", monkeypatching, code-as-data, and reflection.
