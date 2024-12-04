@@ -4,4 +4,8 @@
 
 This can be used to mimick Haskell functionality of [where](https://kiru.io/blog/posts/2024/dear-language-designers-please-copy-where-from-haskell/).      
 The small code example of [where.js](https://github.com/DANser-freelancer/code_bits/blob/haskell-where/where.js) might not seem like much, but as the complexity of the task grows, we find many more alternative paths;      
-And for each alternative path we have to provide inline logic, unless we separate declaration from functionality.
+And for each alternative path we have to provide inline logic, unless we separate declaration from functionality.      
+      
+We can take this concept a step further and rebuild functions with a more intuitive syntax, via a globally available method.        
+Any valid code can be passed to `.where()` in string form.        
+Bonus: To see generated files with syntax highlighting - you can `throw` inside a reconstructed function, and enable debugger pauses on exceptions.
