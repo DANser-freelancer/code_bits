@@ -7,6 +7,6 @@ const lock = function lock(key, secret, token) {
 
 const coinSafe = lock.bind(null, key, 'gold coin');
 
-log(coinSafe('gimme coin'));
-log(coinSafe(Symbol('key for a function')));
-log(coinSafe(key));
+log(coinSafe('gimme coin')); // fails
+log(coinSafe(Symbol('key for a function'))); // fails
+log(coinSafe(key)); // 'gold coin'
