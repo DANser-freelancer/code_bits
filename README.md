@@ -8,6 +8,7 @@ Bascially trying to substitute the presently unavailable/deprecated `arguments.c
 Tis provides a form of `weak encapsulation` of a function's data or work.    
 - by `work` I mean what a function might do with recsources it has access to
 - by `data` I mean the securely stored, or calculated return value
+
 The main flaw of this system is that it can be broken in 3 steps:
 1. create a copycat function that extracts the key out to a variable
 2. call static class method
