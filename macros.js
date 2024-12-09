@@ -1,5 +1,112 @@
 const { log, error, time, timeEnd } = console;
 
+// just the lexer, with most regex machines prebuilt and kept
+export const preprocessEngine = {
+  macro:
+    /(?<sign>\!?[~\-+]){1}\[(?<tag>mut|final|fun)?\`(?<name>.*?)\`\]\s*\=\=\s*(?<val>.*?)\;/g,
+  // ignores function signatures, and namespaces through any combination of ?.[
+  name: /(?:(?:function\s*\(.*\)\s*\{\s*)|(?:\s*\(.*\)\s*=>\s*\{\s*))?(?<!(?:\w\??\.?\[?))(?<word>\b(?!\d)\w+\d*\b)/g,
+  space: /\n\s*\n/g,
+  string: /^[`'"].*[`'"]$/,
+  param: /^\[([a-z,\s*])+\]/i,
+  special: /0x[a-f\d]+|0b\d+|0o\d+|(?:\d+\_\d+)/,
+  boundary: /\(|\{|\[|\]|\}|\)|\,|\;|\s+/,
+  e_assert_end: /(?:\w$|\)$|\$$|\s$)/,
+  e_extra: /\w\$/,
+  // expression that doesn't eval
+  exp() {
+    preprocessEngine.exp = new RegExp(
+      `(?:${preprocessEngine.special.source}|[${preprocessEngine.build(
+        `n_edge_operators`,
+        `n_operators`,
+        `n_extra`,
+        `e_extra`
+      )}])*${preprocessEngine.e_assert_end.source}`,
+      'i'
+    );
+  },
+  n_edge_operators: /\-\+\~/,
+  n_operators: /\/\*\^\<\>\&\|\%/,
+  n_extra: /\s*\.\(\)\d/,
+  n_assert_end: /(?:\d$|\)$|\s$)/,
+  // expression that does eval
+  num() {
+    preprocessEngine.num = new RegExp(
+      `^(?:${preprocessEngine.special.source}|[${preprocessEngine.build(
+        `n_edge_operators`,
+        `n_operators`,
+        `n_extra`
+      )}])*${preprocessEngine.n_assert_end.source}`,
+      'i'
+    );
+  },
+  tags: {
+    final: `const `,
+    mut: `let `,
+    fun: `function `
+  },
+  keywords: [
+    'const',
+    'let',
+    'var',
+    'in',
+    'of',
+    'if',
+    'else',
+    'elseif',
+    'function',
+    'async',
+    'await',
+    'return',
+    'class',
+    'new',
+    'extends',
+    'export',
+    'import'
+  ],
+  // unmatches keywords
+  assert_keyword() {
+    const src = preprocessEngine.keywords.join('|');
+    preprocessEngine.assert_keyword = new RegExp(`(?<!${src})`);
+  },
+  matchName(name) {
+    name = String(name).replaceAll('$', '\\$');
+    return new RegExp(`(?<word>(?<![a-zA-Z_$\\d.])${name}(?![a-zA-Z_$\\d]))+`, 'g');
+  },
+  isNumbers(str) {
+    return this.num.test(str);
+  },
+  build(...names) {
+    const src = new Array(names.length);
+    for (let n = 0; n < names.length; n++) {
+      src[n] = this[names[n]].source;
+    }
+    return src.join('');
+  },
+  stitch(src, val) {
+    const str = src.split('');
+    str.splice(2, 0, val);
+    return str.join('');
+  },
+  freeze() {
+    if (Object.isFrozen(this)) {
+      return this;
+    }
+    for (const key in this) {
+      const field = this[key];
+      if (typeof field === `object` && !(field instanceof RegExp)) {
+        Object.freeze(field);
+      }
+    }
+    return Object.freeze(this);
+  }
+};
+
+preprocessEngine.num();
+preprocessEngine.exp();
+preprocessEngine.assert_keyword();
+preprocessEngine.freeze();
+
 // functional macros are called as functions, and expanded into primitive calculations
 ///////
 // ~[mut`outsider`] == [a](2 ** 2 / 1);
@@ -119,83 +226,6 @@ function preprocess(fn) {
 
   return result;
 }
-
-// just the lexer, with most regex machines prebuilt and kept
-const preprocessEngine = {
-  macro:
-    /(?<sign>[~!+]|\-){1,2}\[(?<tag>mut|final)?\`(?<name>.*?)\`\]\s*\=\=\s*(?<val>.*?)\;/g,
-  // ignores function parameters and namespaces through any combination of ?.[
-  name: /(?:(?:function\s*\(.*\)\s*\{\s*)|(?:\s*\(.*\)\s*=>\s*\{\s*))?(?<!(?:\w\??\.?\[?))(?<word>\b(?!\d)\w+\d*\b)/g,
-  space: /\n\s*\n/g,
-  string: /^[`'"].*[`'"]$/,
-  param: /^\[([a-z,\s*])+\]/i,
-  special: /0x[a-f\d]+|0b\d+|0o\d+|(?:\d+\_\d+)/,
-  boundary: /\(|\{|\[|\]|\}|\)|\,|\;|\s+/,
-  e_assert_end: /(?:\w$|\)$|\$$|\s$)/,
-  e_extra: /\w\$/,
-  // expression that doesn't eval
-  exp: null,
-  n_edge_operators: /\-\+\~/,
-  n_operators: /\/\*\^\<\>\&\|\%/,
-  n_extra: /\s*\.\(\)\d/,
-  n_assert_end: /(?:\d$|\)$|\s$)/,
-  // expression that does eval
-  num: null,
-  tags: {
-    final: `const `,
-    mut: `let `,
-    fun: `function `
-  },
-  matchName(name) {
-    name = String(name).replaceAll('$', '\\$');
-    return new RegExp(`(?<word>(?<![a-zA-Z_$\\d.])${name}(?![a-zA-Z_$\\d]))+`, 'g');
-  },
-  isNumbers(str) {
-    return this.num.test(str);
-  },
-  build(...names) {
-    const str = new Array(names.length);
-    for (let n = 0; n < names.length; n++) {
-      str[n] = this[names[n]].source;
-    }
-    return str.join('');
-  },
-  stitch(src, val) {
-    const str = src.split('');
-    str.splice(2, 0, val);
-    return str.join('');
-  },
-  freeze() {
-    if (Object.isFrozen(this)) {
-      return this;
-    }
-    for (const key in this) {
-      const field = this[key];
-      if (typeof field === `object` && !(field instanceof RegExp)) {
-        Object.freeze(field);
-      }
-    }
-    return Object.freeze(this);
-  }
-};
-preprocessEngine.num = new RegExp(
-  `^(?:${preprocessEngine.special.source}|[${preprocessEngine.build(
-    `n_edge_operators`,
-    `n_operators`,
-    `n_extra`
-  )}])*${preprocessEngine.n_assert_end.source}`,
-  'i'
-);
-preprocessEngine.exp = new RegExp(
-  `(?:${preprocessEngine.special.source}|[${preprocessEngine.build(
-    `n_edge_operators`,
-    `n_operators`,
-    `n_extra`,
-    `e_extra`
-  )}])*${preprocessEngine.e_assert_end.source}`,
-  'i'
-);
-preprocessEngine.freeze();
 
 log(preprocess(lambda));
 
