@@ -6,7 +6,7 @@ Initially I came up with this to make sure a class instance function only runs i
 I was trying to substitute the presently unavailable/deprecated `arguments.callee`.
 ### Note     
 Tis provides a form of `weak encapsulation` of a function's data or work.    
-- by `work` I mean what a function might do with recsources it has access to
+- by `work` I mean what a function might do with resources it has access to
 - by `data` I mean the securely stored, or calculated return value
 
 The main flaw of this system is that it can be broken in 3 steps:
