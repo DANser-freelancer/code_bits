@@ -6,7 +6,9 @@ I. don't. like it.
 Both the single `(     long parenthesis     )` and the multiple `.method.Chaining` are not my cup of tea, specifically when it comes to mimicking a pipe.       
 So this here is a version that's a little bit more self evident.          
 ### Syntax        
-`initialFunctionWithValue(fn, arg)(fn, arg)(fn, arg)()`    
+```javascript      
+initialFunctionWithValue(fn, arg)(fn, arg)(fn, arg)()
+```    
 
 - `initialFunctionWithValue` - start of the pipe is a pipeable function reference.
 - `(fn, arg)` - middle consists of "pipe sections".
