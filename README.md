@@ -7,7 +7,11 @@ Both the single `(     long parenthesis     )` and the multiple `.method.Chainin
 So this here is a version that's a little bit more self evident.          
 ### Syntax        
 ```javascript      
-initialFunctionWithValue(fn, arg)(fn, arg)(fn, arg)()
+const result = initialFunctionWithValue
+(fn, arg)
+(fn, arg)
+(fn, arg)
+();
 ```    
 
 - `initialFunctionWithValue` - start of the pipe is a pipeable function reference.
