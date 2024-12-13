@@ -16,7 +16,7 @@ const result = initialFunctionWithValue(fn, arg)(fn, arg)(fn, arg)();
   2. `arg` is where you can specify any amout of arguments to send to the `fn`.
 - `()` - acts as the pipe end or "outlet" to get the final value.
 - it all looks even more pipe-like if you wrap the initial function too:
-  `(initialFunctionWithValue)(fn, arg)(fn, arg)(fn, arg)()`
+  - `(initialFunctionWithValue)(fn, arg)(fn, arg)(fn, arg)()`
 
 There's nothing revolutionary about it.      
 I simply like how pipe start, end, and sections are clearly defined without having to go through some method.     
