@@ -7,11 +7,7 @@ Both the single `(     long parenthesis     )` and the multiple `.method.Chainin
 So this here is a version that's a little bit more self evident.          
 ### Syntax        
 ```javascript      
-const result = initialFunctionWithValue
-(fn, arg)
-(fn, arg)
-(fn, arg)
-();
+const result = initialFunctionWithValue(fn, arg)(fn, arg)(fn, arg)();
 ```    
 
 - `initialFunctionWithValue` - start of the pipe is a pipeable function reference.
@@ -19,4 +15,5 @@ const result = initialFunctionWithValue
   1. `fn` refers to a function to call in this section of pipe;
   2. `arg` is where you can specify any amout of arguments to send to the `fn`.
 - `()` - acts as the pipe end or "outlet" to get the final value.
+
 There's nothing revolutionary about it, I simply like how pipe start, end, and sections are clearly defined without having to go through some method.
