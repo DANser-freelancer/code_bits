@@ -22,7 +22,7 @@ const result = number(add, 14, 1)(subtract, 9)(multiply, 3)((a) => {
 		I'm at the end of the train,
 		it's cars make no part of a chain.
 		Each rolls on it's own, 
-		but the order is known. 
+		but the cargo is known. 
 		`);
   // heh, in other words there's no recursion
   return a;
