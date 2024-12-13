@@ -25,4 +25,5 @@ Even though this code bit is technically perfectly functional, many programmers 
 For real world creation of cancellable async functions I advise you to use `Promise` objects in combination with `AbortController` or some class extension of `EventEmitter` (nodejs).
 #### Rare use case      
 I recently had to implement a way to cancel a `Promise` awaiting a worker thread, in case the program got stuck because 10 operations were queued and each took 10 minutes to complete.        
-Using an extension of `EventEmitter` I was able to cancel a `Promise` programmatically (in this case after a timeout), in order to let the main program exit. 
+Using an extension of `EventEmitter` I was able to cancel a `Promise` programmatically (in this case after a timeout), in order to let the main program exit.        
+P.s. it's all functionally just `Promise.withResolvers` but I didn't know it was introduced recently to js.
