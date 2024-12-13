@@ -47,8 +47,7 @@ class Pipe {
 const result2 = new Pipe({ name: 'Amber', age: 12 })
 	(rename, 'Lex')
 	(reage, 63)
-	(addHobby,'Phishing')
-	();
+	(addHobby,'Phishing')();
 log(result2); // {name: 'Lex', age: 63, hobby: 'Phishing'}
 
 function rename(obj, name) {
