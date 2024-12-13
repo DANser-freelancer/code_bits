@@ -29,3 +29,36 @@ const result = number(add, 14, 1)(subtract, 9)(multiply, 3)((a) => {
 })();
 
 log(result); // 33
+
+class Pipe {
+  #value;
+  constructor(val) {
+    this.#value = val;
+    return this.callPiped;
+  }
+
+  callPiped = function callPiped(cbk, ...args) {
+    if (typeof cbk != 'function') return this.#value;
+    this.#value = cbk(this.#value, ...args);
+    return this.callPiped;
+  }.bind(this);
+}
+
+const result2 = new Pipe({ name: 'Amber', age: 12 })(rename, 'Lex')(reage, 63)(
+  addHobby,
+  'Phishing'
+)();
+log(result2); // {name: 'Lex', age: 63, hobby: 'Phishing'}
+
+function rename(obj, name) {
+  obj.name = name;
+  return obj;
+}
+function reage(obj, age) {
+  obj.age = age;
+  return obj;
+}
+function addHobby(obj, hobby) {
+  obj.hobby = hobby;
+  return obj;
+}
