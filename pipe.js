@@ -42,6 +42,8 @@ class Pipe {
     this.#value = cbk(this.#value, ...args);
     return this.callPiped;
   }.bind(this);
+  // I like how nbinding looks but a closure would be one less pointer indirection
+  // a binding creates an additional function on top of callPiped
 }
 
 const person = new Pipe({ name: 'Amber', age: 12 });
