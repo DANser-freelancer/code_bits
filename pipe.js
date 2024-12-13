@@ -19,7 +19,7 @@ function subtract(a, b) {
 
 const result = number(add, 14, 1)(subtract, 9)(multiply, 3)((a) => {
   log(`
-		I'm at the end of the train,
+		I'm at the end of a train,
 		it's cars make no part of a chain.
 		Each rolls on it's own, 
 		but the cargo is known. 
