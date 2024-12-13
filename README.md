@@ -18,4 +18,6 @@ const result = initialFunctionWithValue(fn, arg)(fn, arg)(fn, arg)();
 
 There's nothing revolutionary about it.      
 I simply like how pipe start, end, and sections are clearly defined without having to go through some method.     
-And of course you could store the value somewhere else, or protect it by using a binding or a generator instead of a basic function.
+And of course you could store the value somewhere else, or protect it by using a binding or a generator instead of a basic function.     
+Yes this is not highly optimized because every pipe section is a function call that then calls the target function.        
+But both of the other variants are using an additional function call be it `.reduce(callback)` or `.method.method.method`.
