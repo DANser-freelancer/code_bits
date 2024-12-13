@@ -1,5 +1,5 @@
 ## About     
-Very simply put **function piping** is when you call a function and then pass it's output to another one (calling it) and so on.      
+Very simply put [function piping](https://en.wikipedia.org/wiki/Pipeline_(software)#:~:text=The%20name%20%22pipeline%22%20comes%20from,byte%20streams%20as%20data%20objects.) is when you call a function and then pass it's output to another one (calling it) and so on.      
 Javascript technically can do it but provides no syntax for it.      
 Everybody keeps providing similar examples to [this](https://medium.com/@ian_grubb/function-piping-in-javascript-a125b0876a2b).      
 I. don't. like it.        
