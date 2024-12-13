@@ -28,4 +28,4 @@ const result = number(add, 14, 1)(subtract, 9)(multiply, 3)((a) => {
   return a;
 })();
 
-log(result);
+log(result); // 33
