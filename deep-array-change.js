@@ -28,7 +28,7 @@ Object.defineProperties(Array.prototype, {
 
 const { log } = console;
 const arr2D = ['38', '57'].L`2`;
-const arr4D = ['828', '4.19'].L`2`.L`2`.L`2`;
+const arr4D = ['828', '4.19'].L`2`.L`4`.L`1`; // note the irregular shape, [[[[]2 ]2 ]4 ]1
 
 log(arr4D[0][1][1], typeof arr4D[0][1][1][0]); // ['828', '4.19'] 'string'
 arr4D.convertInner('num');
