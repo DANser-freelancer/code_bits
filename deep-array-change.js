@@ -33,7 +33,3 @@ const arr4D = ['828', '4.19'].L`2`.L`2`.L`2`;
 log(arr4D[0][1][1], typeof arr4D[0][1][1][0]);
 arr4D.convertInner('num');
 log(arr4D[0][1][1], typeof arr4D[0][1][1][0]);
-
-// Turns out I was using a `for in` loop and forgot to define custom methods as non-enumerable.
-// God I love PCs, figured it out in 2 minutes.
-// Anyways here's the code, you can take it and translate it directly into csharp by just reading some docs.
