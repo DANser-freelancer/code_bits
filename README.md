@@ -5,4 +5,4 @@ The mechanism is pretty simple:
   - if **is** another `Array` - recurse into it.
   - if **is not** `Array` - convert value's type.
 #### Bonus:     
-There is also an `Array` duplication method with a short syntax.
+There is also an `Array` duplication method with a short syntax, that I used to quickly nest arrays.
