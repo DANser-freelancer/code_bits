@@ -1,5 +1,5 @@
 ## About
-This a deep traversal function for irregularly shaped objects, in this case `Array`s in particular.        
+This a deep traversal function for irregularly shaped objects, in this case `Array`s in particular, to manipulate deeply nested values.        
 The mechanism is pretty simple:    
 - iterate over array entries:
   - if **is** another `Array` - recurse into it.
