@@ -33,3 +33,5 @@ const arr4D = ['828', '4.19'].L`2`.L`2`.L`2`;
 log(arr4D[0][1][1], typeof arr4D[0][1][1][0]); // ['828', '4.19'] 'string'
 arr4D.convertInner('num');
 log(arr4D[0][1][1], typeof arr4D[0][1][1][0]); // [828, 4.19] 'number'
+log(arr2D[0]); // ['38', '57']
+log(arr2D.convertInner('num')[0]); // [38, 57]
