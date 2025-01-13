@@ -7,8 +7,8 @@ I specifically chose `.forEach()` because it's a looping callback caller that ca
 |Keywords|Loop Equivalent|Result|
 |:---:|:---:|:---|
 |`try..catch` and `throw`| `break` | return any value, bubbling upwards through function scopes. |
-|`return`|`continue`| in regular functions you can leave immediately|
-||| in "locked down" functions like callback callers you can only leave the callback, which then gets called again and again |
+|`return`|`continue`| in regular functions you can leave immediately. |
+||| in "locked down" functions like callback callers you can only leave the callback, which then gets called again and again... |
             
 Don't you just *love exceptions*? No, only me?        
 
