@@ -18,7 +18,9 @@ void (function main(arr) {
       function third() {
         arr.forEach((v, i) => {
           log(v, i);
-          if (i > 5) throw i;
+          if (i > 10) throw i;
+          if (i < 9) return 0;
+          log(`didn't "continue"`);
         });
       }
 
