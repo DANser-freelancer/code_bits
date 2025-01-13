@@ -13,6 +13,10 @@ function break_(fn, msg, bubbles) {
 }
 
 void (function main(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    arr[i] = Math.random() * 100;
+  }
+
   function first() {
     function second() {
       function third() {
@@ -30,4 +34,5 @@ void (function main(arr) {
   }
 
   break_(first, `to get the trace when calling first`);
-})(new Array(1000).fill(Math.random() * 100));
+})(new Array(1000));
+
