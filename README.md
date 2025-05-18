@@ -25,6 +25,33 @@ line "forOfGeneric" [2.13, 4.17, 27.88, 246.16, 2458.06]
 line "forOfOptimized" [1.63, 3.11, 15.34, 75.61, 664.39]
 ```
 
+## Float64Array (zoomed in to match `Array` plot)
+
+```mermaid
+---
+config:
+  xyChart:
+    height: 380
+    xAxis:
+      tickLength: 7
+    yAxis:
+      tickLenght: 7
+  themeVariables:
+    xyChart:
+      plotColorPalette: "#0072B2,#56B4E9,#D55E00,#E69F00"
+---
+xychart-beta
+title "Average iteration time of `for` and `iterator`"
+%% if you see this text, try https://mermaid.live/
+x-axis "Array size" ["10k", "100k", "1m", "10m", "100m"]
+y-axis "Time in milliseconds" 1 --> 250
+
+line "for" [0.88, 1.9, 8.99, 26.17, 195.85]
+line "forOfNative" [1.99, 3.48, 15.54, 128.07, 1246.56]
+line "forOfGeneric" [2.13, 4.17, 27.88, 246.16, 2458.06]
+line "forOfOptimized" [1.63, 3.11, 15.34, 75.61, 664.39]
+```
+
 ## Array
 
 ```mermaid
