@@ -83,4 +83,4 @@ Despite all loops taking practically the same amount of time, technically a `for
 
 ### Conclusion
 
-<u>Up to the reader.</u>
+<ins>Up to the reader.</ins>
