@@ -108,6 +108,8 @@ Despite all loops taking practically the same amount of time, technically a `for
 - loop **3** was ~11 times slower.
 - loop **4** was ~3.4 times slower.
 
+The core problem lies in repeated function calling, you can expect the same performance hit from `Array.prototype.forEach()` which repeatedly runs a callback.
+
 ### Conclusion
 
 <ins>Up to the reader.</ins>
