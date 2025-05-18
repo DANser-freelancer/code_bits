@@ -1,10 +1,10 @@
-## Float64Array
+## `Float64Array`
 
 ```mermaid
 ---
 config:
   xyChart:
-    height: 380
+    height: 360
     xAxis:
       tickLength: 7
     yAxis:
@@ -25,13 +25,13 @@ line "forOfGeneric" [2.13, 4.17, 27.88, 246.16, 2458.06]
 line "forOfOptimized" [1.63, 3.11, 15.34, 75.61, 664.39]
 ```
 
-## Float64Array (zoomed in to match `Array` plot)
+## `Float64Array` (zoomed in to match `Array` plot)
 
 ```mermaid
 ---
 config:
   xyChart:
-    height: 380
+    height: 360
     xAxis:
       tickLength: 7
     yAxis:
@@ -52,13 +52,13 @@ line "forOfGeneric" [2.13, 4.17, 27.88, 246.16, 2458.06]
 line "forOfOptimized" [1.63, 3.11, 15.34, 75.61, 664.39]
 ```
 
-## Array
+## `Array`
 
 ```mermaid
 ---
 config:
   xyChart:
-    height: 380
+    height: 360
     xAxis:
       tickLength: 7
     yAxis:
