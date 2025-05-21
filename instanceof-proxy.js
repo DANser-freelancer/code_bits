@@ -8,4 +8,4 @@ Object.defineProperty(Proxy, Symbol.hasInstance, {
     return inst[Symbol.isProxy] === true;
   },
 });
-// now either declare [Symbol.isProxy] in the handler getter or on the target
+// now either define [Symbol.isProxy] in the handler getter or on the target
