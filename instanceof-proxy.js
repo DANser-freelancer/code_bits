@@ -1,6 +1,6 @@
 Object.defineProperty(Symbol, 'isProxy', {
   value: Symbol(
-    `The underlying object or handler specifies that you are going through a a Proxy`
+    `The underlying object or handler specifies that you are going through a Proxy`
   ),
 });
 Object.defineProperty(Proxy, Symbol.hasInstance, {
