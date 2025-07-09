@@ -1,8 +1,8 @@
 ## About
 This is a repo of all the JavaScript things that I come up with.    
-I hear people consider JavaScript to be pretty lispy, and I don't disagree with it.    
+Javascript might seem like a simpler or "lesser" language to some people, but I know it's rich in features, can be performant, and has many metaprogramming options.   
 This code is meant to do funny, complicated, silly, or cool things.    
-Consider this a free RnD project of one guy who wrote vanila JavaScript for 6 years.
+Consider this a free RnD project of one guy who wrote vanilla JavaScript for 6 years.
 
 Upgrades are welcome too. Every branch has a copy of the permissive free licence.     
 
