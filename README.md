@@ -1,6 +1,6 @@
 ## About      
 Despite JS not having a functioning `goto` keyword, the goto mechanism can be easily simulated.         
-Both `while` and `switch` are control flow constructs, they are also statements and can therefore be labeled to target them with `break` and `continue` (see [labeled statements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/label)).         
+Both `while` and `switch` are **flow control constructs**, they are also statements and can therefore be labeled to target them with `break` and `continue` (see [labeled statements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/label)).         
 [switch](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch) is especially interesting; the `case`s act more like pointers to where the execution will start, after a match it will ignore all `case` clauses until the end of the `switch` or a `break`.        
 You can also give each `case` it's own block statement to provide a separate scope, and to be able to label (and back out of) individual cases (which will then cotinue executing the `switch` code below).
 
