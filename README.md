@@ -1,15 +1,9 @@
-## About
-This is a repo of all the JavaScript things that I come up with.    
-Javascript might seem like a simpler or "lesser" language to some people, but I know it's rich in features, can be performant, and has many metaprogramming options.   
-This code is meant to do funny, complicated, silly, or cool things.    
-Consider this a free RnD project of one guy who wrote vanilla JavaScript for 6 years.
+## About      
+Despite JS not having a functioning `goto` keyword, the goto mechanism can be easily simulated.         
+Both `while` and `switch` are control flow constructs, they are also statements and can therefore be labeled to target them with `break` and `continue` (see [labeled statements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/label)).         
+[switch](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch) is especially interesting; the `case`s act more like pointers to where the execution will start, and it will keep going up untill the end of the `switch` or a `break`.        
+You can also give each `case` it's own block statement to provide a separate scope, and to be able to label (and back out of) individual cases.
 
-Upgrades are welcome too. Every branch has a copy of the permissive free licence.     
-
-### Q&A    
-*Why does this work?*    
-A short explanation for most code bits would be:
-- *almost* everything in javascript is an object, one way or another.
-- `.prototype` chains are useful to globally alter behavior of objects (including primitives as they are boxed).
-- `constructor.name`, `instanceof`, `name`, and `typeof` can all be used in different scenarios to precisely determine what object you are dealing with.
-- JavaScript's heavy lean into flexibility allows me to do some metaprogramming using granular property control, some "magic methods", monkeypatching, code-as-data, and reflection.
+## How this works
+By matching goto names I effectively select the desired regions of code, unlike an `if..else if` chain - every line down from the selected goto will execute as if you simply jumped around the source file.       
+I used a sentinel value in the loop but you could design your gotos in a way that is always guaranteed to eventually `break` execution.
