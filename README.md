@@ -14,5 +14,5 @@ Though `switch` has a few conditions to be a jump table:
 - All cases must be literal primitives. Variables, templates, anything not immediately discernable will not work;
 - The case sparsity must be reasonably low. A jump table will take the case values and factor them into jump addresses.
 
-For a switch of case 10 and case 1'000'000 the JIT would have to create 2 jumps that do anything and pad a giant space of 999'998 with `default`.      
+For a switch of case 10 and case 1'000'000 the JIT would have to create 2 jumps that do anything and pad a giant space of 999'998 jumps with `default` (which it won't do).      
 Also if you find yourself having to write `switch (true)` - you've lost it. Use `if` statements for multiple and or exclusive conditions.
