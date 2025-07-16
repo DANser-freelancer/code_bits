@@ -9,4 +9,4 @@ By matching goto names I effectively select the desired regions of code, unlike 
 I used a sentinel value in the loop but you could design your gotos in a way that is always guaranteed to eventually `break` execution.        
 All the labels, breaks, continues, and cases are actually JIT compiled into literal jumps to specific memory regions of machine code (very efficient). Though `switch` has a few conditions to be a jump table:        
 - All cases must be literal primitives. Variables, templates, anything not immediately discernable will not work;
-- The case sparsity must be reasonably low. A jump table will take the case values and factor them into jump addresses. For a switch of case 10 and case 1'000'000 JIT would have to create 2 jumps that do anything and pad a giant space of 999'998 with noop.
+- The case sparsity must be reasonably low. A jump table will take the case values and factor them into jump addresses. For a switch of case 10 and case 1'000'000 JIT would have to create 2 jumps that do anything and pad a giant space of 999'998 with `default`.
