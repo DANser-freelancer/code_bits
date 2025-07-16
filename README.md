@@ -5,9 +5,8 @@ Both `while` and `switch` are **control flow constructs**, they are also stateme
 You can also give each `case` it's own block statement to provide a separate scope, and to be able to label (and back out of) individual cases (which will then cotinue executing the `switch` code below).
 
 ## How this works
-By matching goto names I effectively select the desired regions of code, unlike an `if..else if` chain - every line down from the selected goto will execute as if you simply jumped around the source file.       
+By matching goto names I effectively select the desired regions of code, unlike an `if..else if` chain - every line down from the selected goto will execute as if you simply jumped around the source file. All the labels, breaks, continues, and cases are actually JIT compiled into literal jumps to specific memory regions of machine code (very efficient). 
 I used a sentinel value in the loop but you could design your gotos in a way that is always guaranteed to eventually `break` execution.        
-All the labels, breaks, continues, and cases are actually JIT compiled into literal jumps to specific memory regions of machine code (very efficient). 
 
 ## Note     
 Though `switch` has a few conditions to be a jump table:        
