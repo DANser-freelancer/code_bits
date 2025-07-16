@@ -7,6 +7,12 @@ You can also give each `case` it's own block statement to provide a separate sco
 ## How this works
 By matching goto names I effectively select the desired regions of code, unlike an `if..else if` chain - every line down from the selected goto will execute as if you simply jumped around the source file.       
 I used a sentinel value in the loop but you could design your gotos in a way that is always guaranteed to eventually `break` execution.        
-All the labels, breaks, continues, and cases are actually JIT compiled into literal jumps to specific memory regions of machine code (very efficient). Though `switch` has a few conditions to be a jump table:        
+All the labels, breaks, continues, and cases are actually JIT compiled into literal jumps to specific memory regions of machine code (very efficient). 
+
+## Note     
+Though `switch` has a few conditions to be a jump table:        
 - All cases must be literal primitives. Variables, templates, anything not immediately discernable will not work;
-- The case sparsity must be reasonably low. A jump table will take the case values and factor them into jump addresses. For a switch of case 10 and case 1'000'000 JIT would have to create 2 jumps that do anything and pad a giant space of 999'998 with `default`.
+- The case sparsity must be reasonably low. A jump table will take the case values and factor them into jump addresses.
+
+For a switch of case 10 and case 1'000'000 the JIT would have to create 2 jumps that do anything and pad a giant space of 999'998 with `default`.      
+Also if you find yourself having to write `switch (true)` - you've lost it. Use `if` statements for multiple and or exclusive conditions.
