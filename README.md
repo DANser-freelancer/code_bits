@@ -11,5 +11,5 @@ This function is compatible with all [iterables](https://developer.mozilla.org/e
 I tried making an object iterable by using `for..in` which didn't work as expected, using `Object.entries()` will be more expensive but also more compatible.\
 I've used [iterator helpers](https://v8.dev/features/iterator-helpers) from 2024 so this requires modern JS.\
 The `.forChunks()` method also works as a standalone function, you only need to replace `this` with a new parameter.\
-Unlike `Array.prototype.forEach()` the `.forChunks()` method is designed to work with index-less iterables, such as `Map`, and to iterate in chunks.\
-Therefore I cannot give the callback the current index as a second-to-last arg, but I can still give the target iterable as the last arg.
+Unlike `Array.prototype.forEach()` the `.forChunks()` method is designed to work with index-less iterables, such as `Map`, and to iterate in chunks. Therefore I cannot give the callback the current index as a second-to-last arg, but I can still give the target iterable as the last arg.\
+I think `if (Iterator.from(this).drop(skip).next().done) break;` could be a little too expensive for my likinig, but it's a must have. This is the only way to know if an index-less iterable is exhausted.
