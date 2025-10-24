@@ -6,7 +6,7 @@ function chunkIterator(chunkSize, callback) {
   while (true) {
     if (Iterator.from(this).drop(skip).next().done) break;
     const chunk = iter.take(chunkSize);
-    callback(...chunk);
+    callback(...chunk, this);
     skip += chunkSize;
   }
 }
