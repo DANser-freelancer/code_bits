@@ -42,11 +42,12 @@ class Pipe {
     this.#value = cbk(this.#value, ...args);
     return this.callPiped;
   }.bind(this);
-  // I like how nbinding looks but a closure would be one less pointer indirection
+  // I like how binding looks but a closure would be one less pointer indirection
   // a binding creates an additional function on top of callPiped
 }
 
 const person = new Pipe({ name: 'Amber', age: 12 });
+log(person); // { name: 'Amber', age: 12 }
 const result2 = person(rename, 'Lex')(reage, 63)(addHobby, 'Phishing')();
 const currentVal = person();
 log(result2); // {name: 'Lex', age: 63, hobby: 'Phishing'}
@@ -64,3 +65,4 @@ function addHobby(obj, hobby) {
   obj.hobby = hobby;
   return obj;
 }
+
