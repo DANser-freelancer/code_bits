@@ -21,6 +21,6 @@ const result = initialFunctionWithValue(fn, args)(fn, args)(fn, args)();
 
 ~~There's nothing revolutionary about it.~~ Apparently piping is better than regular method chaining for being opaque. Piping really helps dead code elimination from something like `deno bundle` AKA `esbuild`.\
 I like how pipe start, sections, and end are clearly defined without having to go through some method.\
-And of course you could store the value somewhere else, or protect it by using a binding or a generator instead of a basic function.\
+And of course you could store the value somewhere else, or protect it by using a binding or a generator instead of a basic function.
 Yes this has a small performance cost, because every pipe section is a function call that then calls the target function.\
 But both of the other piping variants are using an additional function call, be it `.reduce(callback)` or `.piping.method.chaining`.
